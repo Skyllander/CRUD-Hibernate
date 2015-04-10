@@ -1,6 +1,10 @@
-## Treinamento JAVA
+## Projeto de Treinamento
 
-Módulo usado pra treinamento na tecnologia JAVA. Tecnologias: Play!Framework, Hibernate, Banco de Dados.
+Projeto usado para o treinamento de um novo membro no LEMAF. O projeto contém a descrição de um problema do qual a solução deve ser modelada e implementada pelo colaborador de acordo com as tecnologias em que será treinado.
+
+### IMPORTANTE
+
+Não desenvolva nenhum código no branch 'master'. Crie sempre um branch com o nome do colaborador para desenvolver o projeto.
 	
 -----
 
