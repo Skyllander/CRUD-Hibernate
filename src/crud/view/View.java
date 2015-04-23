@@ -30,18 +30,58 @@ public class View {
 		return entradas;
 	}
 	
-	public void listaOpcoes(ArrayList<String> sA) {
+	public int listaOpcao(ArrayList<String> sA, Scanner user_input) {
 		int op = 1;
+		printMark();
 		for (String s : sA) {
 			System.out.println(op + " - " + s);
 			++op;
 		}
+		fimOp();
+		String in = user_input.nextLine();
+		Integer select = -1;
+		try{
+			select = Integer.parseInt(in);
+		}
+		catch (NumberFormatException e) {
+		}
 		System.out.println("");
+		return select;
 	}
 	
-	public void listaOpcoes(String s) {
+	public int listaOpcao(String s, Scanner user_input) {
+		printMark();
 		System.out.println("1" + " - " + s);
+		fimOp();
+		String in = user_input.nextLine();
+		Integer select = -1;
+		try{
+			select = Integer.parseInt(in);
+		}
+		catch (NumberFormatException e) {
+		}
+		/*Integer entrada = Integer.parseInt(in);
+		if (entrada < 0 || entrada > 1) {
+			System.out.println("Opcao Invalida\n");
+			return "-1";
+		}
+		else {
+			System.out.println("");
+			return in;
+		}*/
 		System.out.println("");
+		return select;
+	}
+	
+	private void printMark() {
+		System.out.println("--------------------");
+	}
+	
+	private void fimOp() {
+		System.out.println("0 - Sair");
+		printMark();
+		System.out.println("");
+		System.out.print("Entrada: ");
 	}
 	
 	

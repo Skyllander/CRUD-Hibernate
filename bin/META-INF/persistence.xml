@@ -5,7 +5,7 @@ version="2.0">
 
 	<persistence-unit name="sistemacrud">
 	<provider>org.hibernate.ejb.HibernatePersistence</provider>
-	<class>br.com.caelum.financas.modelo.Conta</class>
+	<class>crud.model.Cargo</class>
 	
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
