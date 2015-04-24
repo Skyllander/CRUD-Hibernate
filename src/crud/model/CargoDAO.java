@@ -20,6 +20,10 @@ public class CargoDAO {
 		return dao.busca(id);
 	}
 	
+	public Cargo busca(String nome) {
+		return dao.busca(nome);
+	}
+	
 	public List<Cargo> lista() {
 		return dao.lista();
 	}

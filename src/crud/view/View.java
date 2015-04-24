@@ -16,7 +16,7 @@ public class View {
 		campos = new ArrayList<String>();
 		titulo = "NAO-DEFINIDO";
 	}
-	public void mostraTitulo() {
+	protected void mostraTitulo() {
 		String mark = new String();
 		for (int i = 0; i < titulo.length() ; ++i) mark = mark.concat("=");
 		System.out.println(mark);
@@ -24,24 +24,24 @@ public class View {
 		System.out.println(mark + "\n");
 	}
 	
-	public String recebeCampo(String s) {
+	protected String recebeCampo(String s) {
 		System.out.print(s + ": ");
 		String input = user_scan.nextLine();
-		System.out.println("");
+		System.out.println();
 		return input;
 	}
 	
-	public ArrayList<String> recebeCampo() {
+	protected ArrayList<String> recebeCampo() {
 		ArrayList<String> entradas = new ArrayList<String>();
 		for (String s : campos) {
 			System.out.print(s + ": ");
 			entradas.add(user_scan.nextLine());
 		}
-		System.out.println("");
+		System.out.println();
 		return entradas;
 	}
 	
-	public int listaOpcao() {
+	protected int listaOpcao() {
 		int op = 1;
 		printMark();
 		for (String s : opcoes) {
@@ -56,11 +56,11 @@ public class View {
 		}
 		catch (NumberFormatException e) {
 		}
-		System.out.println("");
+		System.out.println();
 		return select;
 	}
 	
-	public int listaOpcao(String s) {
+	protected int listaOpcao(String s) {
 		printMark();
 		System.out.println("1" + " - " + s);
 		fimOp();
@@ -71,18 +71,18 @@ public class View {
 		}
 		catch (NumberFormatException e) {
 		}
-		System.out.println("");
+		System.out.println();
 		return select;
 	}
 	
-	private void printMark() {
+	protected void printMark() {
 		System.out.println("--------------------");
 	}
 	
 	private void fimOp() {
 		System.out.println("0 - Sair");
 		printMark();
-		System.out.println("");
+		System.out.println();
 		System.out.print("Entrada: ");
 	}
 	

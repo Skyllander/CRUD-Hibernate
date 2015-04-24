@@ -11,36 +11,19 @@ public class CargoCadastrar extends View {
 	CargoCadastrar(Scanner scan, Cargos control) {
 		super(scan);
 		this.control = control;
-		opcoes.add("Novo Cargo");
-		titulo = "CADASTRO";
+		titulo = "CARGOS-CADASTRAR";
 	}
 	
-	private void cadastra() {
-		control.cadastra(recebeCampo("Nome"));
+	private boolean cadastra() {
+		return control.cadastra(recebeCampo("Nome*"));
 	}
 	
 	public void init() {
 		mostraTitulo();
-		Integer select = -1;
-		select = listaOpcao();
-		boolean sair = false;
-		while (!sair) {
-			switch(select)
-			{
-				case 1:
-					cadastra();
-					mostraTitulo();
-					select = listaOpcao();
-					break;
-				case 0:
-					System.out.println("Exit");
-					sair = true;
-					break;
-				default:
-					System.out.println("[Opcao Invalida]");
-					mostraTitulo();
-					select = listaOpcao();
-			}
+		if (cadastra()) System.out.println("Inserido com sucesso");
+		else {
+			System.out.println("[*Os nomes dos cargos devem ser exclusivos*]");
+			System.out.println("[*O campo de nome e obrigatorio*]");
 		}
 	}
 	

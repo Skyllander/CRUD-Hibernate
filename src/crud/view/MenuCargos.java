@@ -13,9 +13,9 @@ public class MenuCargos extends View {
 	
 	private final Cargos control;
 	
-	MenuCargos(Scanner scan, Cargos control) {
+	MenuCargos(Scanner scan) {
 		super(scan);
-		this.control = control;
+		control = new Cargos();
 		cadastro = new CargoCadastrar(scan, control);
 		edicao = new CargoEditar(scan, control);
 		listagem = new CargoListar(scan, control);
@@ -41,10 +41,12 @@ public class MenuCargos extends View {
 					select = listaOpcao();
 					break;
 				case 2:
+					listagem.init();
 					mostraTitulo();
 					select = listaOpcao();
 					break;
 				case 3:
+					edicao.init();
 					mostraTitulo();
 					select = listaOpcao();
 					break;
@@ -57,7 +59,7 @@ public class MenuCargos extends View {
 					sair = true;
 					break;
 				default:
-					System.out.println("[Opcao Invalida]");
+					System.out.println("[*Opcao Invalida*]");
 					mostraTitulo();
 					select = listaOpcao();
 			}

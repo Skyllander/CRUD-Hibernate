@@ -2,19 +2,14 @@ package crud.view;
 
 import java.util.Scanner;
 
-import crud.controller.*;
-
 public class MenuPrincipal extends View {
 
-
 	MenuCargos mCargos;
-	private final Cargos controlC;
 	
 	MenuPrincipal(Scanner scan) {
 		super(scan);
-		controlC = new Cargos();
 		opcoes.add("Cargos");
-		mCargos = new MenuCargos(user_scan, controlC);
+		mCargos = new MenuCargos(user_scan);
 		titulo = "MENU-PRINCIPAL";
 	}
 	
@@ -33,11 +28,10 @@ public class MenuPrincipal extends View {
 					break;
 				case 0:
 					System.out.println("Exit");
-					controlC.close();
 					sair = true;
 					break;
 				default:
-					System.out.println("[Opcao Invalida]");
+					System.out.println("[*Opcao Invalida*]");
 					mostraTitulo();
 					select = listaOpcao();
 			}
