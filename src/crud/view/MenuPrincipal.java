@@ -1,42 +1,45 @@
 package crud.view;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import crud.controller.*;
 
 public class MenuPrincipal extends View {
 
-	Scanner user_scan;
-	private final Cargos control;
-	ArrayList<String> opcoes;
+
+	MenuCargos mCargos;
+	private final Cargos controlC;
 	
 	MenuPrincipal(Scanner scan) {
-		user_scan = scan;
-		control = new Cargos();
-		opcoes = new ArrayList<String>();
+		super(scan);
+		controlC = new Cargos();
 		opcoes.add("Cargos");
+		mCargos = new MenuCargos(user_scan, controlC);
+		titulo = "MENU-PRINCIPAL";
 	}
 	
 	public void init() {
-		mostraTitulo("MENU");
+		mostraTitulo();
 		Integer select = -1;
-		select = listaOpcao(opcoes, user_scan);
-		boolean valid = false;
-		while (!valid) {
+		select = listaOpcao();
+		boolean sair = false;
+		while (!sair) {
 			switch(select)
 			{
 				case 1:
-					System.out.println("Ok");
-					valid = true;
+					mCargos.init();
+					mostraTitulo();
+					select = listaOpcao();
 					break;
 				case 0:
 					System.out.println("Exit");
-					valid = true;
+					controlC.close();
+					sair = true;
 					break;
 				default:
-					System.out.println("Opcao Invalida");
-					select = listaOpcao(opcoes, user_scan);
+					System.out.println("[Opcao Invalida]");
+					mostraTitulo();
+					select = listaOpcao();
 			}
 		}
 	}

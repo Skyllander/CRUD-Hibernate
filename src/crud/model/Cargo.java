@@ -8,8 +8,11 @@ public class Cargo {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
 	private String nome;
+	
+	public Cargo (String nome) {
+		this.nome = nome;
+	}
 	
 	public Integer getId() {
 		return id;
