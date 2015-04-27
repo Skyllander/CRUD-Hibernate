@@ -15,11 +15,12 @@ public class CargoListar extends View
 	}
 	
 	private void lista() {
-		List<String> consulta = control.lista();
+		List<String> consultaN = control.listaNome();
+		List<Integer> consultaID = control.listaID();
 		printMark();
-		if (!consulta.isEmpty()) {
-			for(String s : consulta) {
-				System.out.println(s);
+		if (!consultaN.isEmpty()) {
+			for(int i = 0; i < consultaID.size(); ++i) {
+				System.out.println("ID: " + consultaID.get(i) + " | Nome: " + consultaN.get(i));
 				printMark();
 			}
 		}

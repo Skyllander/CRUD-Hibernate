@@ -51,11 +51,11 @@ public class MenuCargos extends View {
 					select = listaOpcao();
 					break;
 				case 4:
+					remocao.init();
 					mostraTitulo();
 					select = listaOpcao();
 					break;
 				case 0:
-					System.out.println("Exit");
 					sair = true;
 					break;
 				default:

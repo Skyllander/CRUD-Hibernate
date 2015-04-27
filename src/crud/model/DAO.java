@@ -14,12 +14,24 @@ public class DAO<T> {
 		this.classe = classe;
 	}
 	
-	public T busca(Integer id){
-		return em.getReference((classe), id);
+	@SuppressWarnings("unchecked")
+	public List<T> busca(Integer id){
+		try {
+			return em.createQuery("from " + classe.getName() + " where id = '" + id + "'").getResultList();
+		}
+		catch (Exception NoResultException) {
+			return null;
+		}
 	}
 	
-	public T busca(String nome){
-		return em.getReference((classe), em.createQuery("select e from " + classe.getName() + " e").getFirstResult());
+	@SuppressWarnings("unchecked")
+	public List<T> busca(String nome){
+		try {
+			return em.createQuery("from " + classe.getName() + " where nome = '" + nome + "'").getResultList();
+		}
+		catch (Exception NoResultException) {
+			return null;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")

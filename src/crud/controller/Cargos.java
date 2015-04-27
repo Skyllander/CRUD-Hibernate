@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.RollbackException;
 
 import crud.model.*;
 
@@ -19,8 +20,21 @@ public class Cargos {
 		dao = new CargoDAO(em);
 	}
 	
-	public boolean editaNome(int id, String nome) {
-		Cargo encontrado = dao.busca(id);
+	public <T>boolean editaNome(T tag, String nome) {
+		List<Cargo> encontrados;
+		Cargo encontrado;
+		if (tag.getClass().equals(String.class)) {
+			encontrados = dao.busca((String)tag);
+			if (encontrados.size() < 2 && !encontrados.isEmpty()) 
+				encontrado = encontrados.get(0);
+			else return false;
+		}
+		else {
+			encontrados = dao.busca((Integer)tag);
+			if (encontrados.size() < 2 && !encontrados.isEmpty()) 
+				encontrado = encontrados.get(0);
+			else return false;
+		}
 		boolean valido = true;
 		if (encontrado != null) {
 			init();
@@ -36,18 +50,36 @@ public class Cargos {
 		else return false;
 	}
 	
-	public boolean editaNome(String vNome, String nNome) {
-		Cargo encontrado = dao.busca(vNome);
+	public <T>boolean removeNome(T tag) {
+		List<Cargo> encontrados;
+		Cargo encontrado;
+		if (tag.getClass().equals(String.class)) {
+			encontrados = dao.busca((String)tag);
+			if (encontrados.size() < 2 && !encontrados.isEmpty()) 
+				encontrado = encontrados.get(0);
+			else return false;
+		}
+		else {
+			encontrados = dao.busca((Integer)tag);
+			if (encontrados.size() < 2 && !encontrados.isEmpty()) 
+				encontrado = encontrados.get(0);
+			else return false;
+		}
 		boolean valido = true;
 		if (encontrado != null) {
 			init();
 			try {
-				encontrado.setNome(nNome);
+				dao.remove(encontrado);
 			}
 			catch(EntityNotFoundException e){
 				valido = false;
 			}
-			commit();
+			try {
+				commit();
+			}
+			catch (RollbackException e) {
+				valido = false;
+			}
 			return valido;
 		}
 		else return false;
@@ -76,14 +108,24 @@ public class Cargos {
 		else return false;
 	}
 	
-	public List<String> lista() {
+	public List<String> listaNome() {
 		List<Cargo> lista = dao.lista();
 		List<String> nomes = new ArrayList<String>();
+		Collections.sort(lista);
 		for (Cargo c : lista) {
 			nomes.add(c.getNome());
 		}
-		Collections.sort(nomes);
 		return nomes;
+	}
+	
+	public List<Integer> listaID() {
+		List<Cargo> lista = dao.lista();
+		List<Integer> ids = new ArrayList<Integer>();
+		Collections.sort(lista);
+		for (Cargo c : lista) {
+			ids.add(c.getId());
+		}
+		return ids;
 	}
 	
 	private void init() {

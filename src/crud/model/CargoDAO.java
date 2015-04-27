@@ -16,11 +16,11 @@ public class CargoDAO {
 		dao.adiciona(t);
 	}
 	
-	public Cargo busca(Integer id) {
+	public List<Cargo> busca(Integer id) {
 		return dao.busca(id);
 	}
 	
-	public Cargo busca(String nome) {
+	public List<Cargo> busca(String nome) {
 		return dao.busca(nome);
 	}
 	

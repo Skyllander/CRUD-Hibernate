@@ -16,18 +16,16 @@ public class CargoEditar extends View {
 		titulo = "CARGOS-EDITAR";
 	}
 	
-	private void editaNome(int id, String nome) {
-		if (control.editaNome(id, nome)) {
-			System.out.println("[*Alteracao feita*]");
+	private <T>void editaNome(T tag, String nome) {
+		if (!nome.isEmpty()) {
+			if (control.editaNome(tag, nome)) {
+				System.out.println("[*Alteracao feita*]");
+			}
+			else System.out.println("[*Nao encontrado*]");
 		}
-		else System.out.println("[*ID nao econtrada*]");
-	}
-	
-	private void editaNome(String nNome, String vNome) {
-		if (control.editaNome(nNome, vNome)) {
-			System.out.println("[*Alteracao feita*]");
+		else {
+			System.out.println("[*Novo nome deve ser especificado*]");
 		}
-		else System.out.println("[*Nome nao encontrado*]");
 	}
 	
 	public void init() {
@@ -39,19 +37,21 @@ public class CargoEditar extends View {
 			switch(select)
 			{
 				case 1:
-					//cadastro.init();
-					editaNome(Integer.parseInt(recebeCampo("ID")),recebeCampo("Novo Nome"));
+					try {
+						editaNome(Integer.parseInt(recebeCampo("ID")),recebeCampo("Novo Nome"));
+					}
+					catch (NumberFormatException e) {
+						System.out.println("[*Formato de ID invalido*]");
+					}
 					mostraTitulo();
 					select = listaOpcao();
 					break;
 				case 2:
-					//listagem.init();
 					editaNome(recebeCampo("Nome Atual"),recebeCampo("Novo Nome"));
 					mostraTitulo();
 					select = listaOpcao();
 					break;
 				case 0:
-					System.out.println("Exit");
 					sair = true;
 					break;
 				default:

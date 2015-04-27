@@ -27,7 +27,7 @@ public class MenuPrincipal extends View {
 					select = listaOpcao();
 					break;
 				case 0:
-					System.out.println("Exit");
+					System.out.println("[*Exit*]");
 					sair = true;
 					break;
 				default:

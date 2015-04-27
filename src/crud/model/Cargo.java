@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "CARGO", uniqueConstraints = {
 	@UniqueConstraint(columnNames ="ID"),
 	@UniqueConstraint(columnNames = "NOME") })
-public class Cargo {
+public class Cargo implements Comparable<Object>{
 	
 	@Id
 	@GeneratedValue
@@ -33,6 +33,16 @@ public class Cargo {
 	
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+	    if (!(o instanceof Cargo))
+	        throw new ClassCastException();
+	    
+	    Cargo e = (Cargo) o;
+	    
+		return nome.compareTo(e.getNome());
 	}
 	
 }
