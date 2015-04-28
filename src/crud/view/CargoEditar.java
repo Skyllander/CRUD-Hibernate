@@ -25,6 +25,7 @@ public class CargoEditar extends View {
 		}
 		else {
 			System.out.println("[*Novo nome deve ser especificado*]");
+			System.out.println("[*Numeros nao sao permitidos*]");
 		}
 	}
 	

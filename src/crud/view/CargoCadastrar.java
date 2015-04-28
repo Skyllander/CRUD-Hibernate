@@ -20,10 +20,11 @@ public class CargoCadastrar extends View {
 	
 	public void init() {
 		mostraTitulo();
-		if (cadastra()) System.out.println("Inserido com sucesso");
+		if (cadastra()) System.out.println("[*Inserido com sucesso*]");
 		else {
 			System.out.println("[*Os nomes dos cargos devem ser exclusivos*]");
 			System.out.println("[*O campo de nome e obrigatorio*]");
+			System.out.println("[*Numeros nao sao permitidos*]");
 		}
 	}
 	

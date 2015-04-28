@@ -18,7 +18,7 @@ public class CargoListar extends View
 		List<String> consultaN = control.listaNome();
 		List<Integer> consultaID = control.listaID();
 		printMark();
-		if (!consultaN.isEmpty()) {
+		if (!consultaID.isEmpty()) {
 			for(int i = 0; i < consultaID.size(); ++i) {
 				System.out.println("ID: " + consultaID.get(i) + " | Nome: " + consultaN.get(i));
 				printMark();

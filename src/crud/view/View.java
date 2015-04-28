@@ -16,6 +16,7 @@ public class View {
 		campos = new ArrayList<String>();
 		titulo = "NAO-DEFINIDO";
 	}
+	
 	protected void mostraTitulo() {
 		String mark = new String();
 		for (int i = 0; i < titulo.length() ; ++i) mark = mark.concat("=");

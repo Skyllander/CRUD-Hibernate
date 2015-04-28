@@ -1,12 +1,13 @@
 package crud.model;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 public class DAO<T> {
 
-	private final EntityManager em;
+	protected final EntityManager em;
 	private final Class<T> classe;
 	
 	public DAO(EntityManager em, Class<T> classe) {
@@ -15,28 +16,16 @@ public class DAO<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> busca(Integer id){
-		try {
-			return em.createQuery("from " + classe.getName() + " where id = '" + id + "'").getResultList();
-		}
-		catch (Exception NoResultException) {
-			return null;
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<T> busca(String nome){
-		try {
-			return em.createQuery("from " + classe.getName() + " where nome = '" + nome + "'").getResultList();
-		}
-		catch (Exception NoResultException) {
-			return null;
-		}
+	public List<T> busca(Integer id) throws NoResultException{
+		Query query = em.createQuery("from " + classe.getName() + " where id = :nID ");
+		query.setParameter("nID", id);
+		return query.getResultList();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> lista() {
-		return em.createQuery("select e from " + classe.getName() + " e").getResultList();
+		Query query = em.createQuery("from " + classe.getName());
+		return query.getResultList();
 	}
 	
 	public void adiciona(T t) {
@@ -45,6 +34,18 @@ public class DAO<T> {
 	
 	public void remove(T t) {
 		em.remove(t);
+	}
+	
+	protected void init() {
+		em.getTransaction().begin();
+	}
+	
+	protected void commit() {
+		em.getTransaction().commit();
+	}
+	
+	protected void close() {
+		em.close();
 	}
 	
 }
