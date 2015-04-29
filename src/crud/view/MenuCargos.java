@@ -6,20 +6,20 @@ import crud.controller.Cargos;
 
 public class MenuCargos extends View {
 	
-	private CargoCadastrar cadastro;
-	private CargoEditar edicao;
-	private CargoListar listagem;
-	private CargoRemover remocao;
+	private CargoCadastra cadastro;
+	private CargoEdita edicao;
+	private CargoLista listagem;
+	private CargoRemove remocao;
 	
 	private final Cargos control;
 	
 	MenuCargos(Scanner scan) {
 		super(scan);
 		control = new Cargos();
-		cadastro = new CargoCadastrar(scan, control);
-		edicao = new CargoEditar(scan, control);
-		listagem = new CargoListar(scan, control);
-		remocao = new CargoRemover(scan, control);
+		cadastro = new CargoCadastra(scan, control);
+		edicao = new CargoEdita(scan, control);
+		listagem = new CargoLista(scan, control);
+		remocao = new CargoRemove(scan, control);
 		opcoes.add("Cadastrar");
 		opcoes.add("Listar");
 		opcoes.add("Editar");

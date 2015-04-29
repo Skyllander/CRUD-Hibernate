@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 import crud.controller.Cargos;
 
-public class CargoRemover extends View {
+public class CargoRemove extends View {
 	
 	private final Cargos control;
 	
-	CargoRemover(Scanner scan, Cargos control) {
+	CargoRemove(Scanner scan, Cargos control) {
 		super(scan);
 		this.control = control;
 		opcoes.add("Buscar ID");

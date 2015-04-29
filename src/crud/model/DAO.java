@@ -31,13 +31,13 @@ public class DAO<T> {
 		return query.getResultList();
 	}
 	
-	public void adiciona(T t) {
-		em.persist(t);
+	public void adiciona(T obj) {
+		em.persist(obj);
 		JPAUtil.commit();
 	}
 	
-	public void remove(T t) {
-		em.remove(t);
+	public void remove(T obj) {
+		em.remove(obj);
 		JPAUtil.commit();
 	}
 	

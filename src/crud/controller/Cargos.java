@@ -7,7 +7,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import crud.model.*;
-import execoes.ValidacaoException;
+import execoes.ValidationException;
 
 public class Cargos {
 	
@@ -25,20 +25,18 @@ public class Cargos {
 		return dao.removeNome(tag);
 	}
 	
-	public boolean cadastra(String nome) {//TODO Retorna mensagem objeto de erro/sucesso
+	//TODO Metodos "semelhantes" retornando String
+	public String cadastra(String nome) {
 		
 		Cargo cargo = new Cargo();
 		cargo.nome = nome;
-		
-		boolean ok = true;
 		try{
 			cargo.cadastra();
 		}
-		catch(ValidacaoException e) {
-			e.getMessage();
-			ok = false;
+		catch(ValidationException e) {
+			return e.getMessage();
 		}
-		return ok;
+		return "Inserido com sucesso";
 	}
 	
 	public List<String> listaNome() {

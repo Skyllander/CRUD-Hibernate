@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 import crud.controller.Cargos;
 
-public class CargoEditar extends View {
+public class CargoEdita extends View {
 	
 	private final Cargos control;
 	
-	CargoEditar(Scanner scan, Cargos control) {
+	CargoEdita(Scanner scan, Cargos control) {
 		super(scan);
 		this.control = control;
 		opcoes.add("Buscar ID");

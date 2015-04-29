@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Scanner;
 import crud.controller.Cargos;
 
-public class CargoListar extends View
+public class CargoLista extends View
 {
 	private final Cargos control;
 
-	CargoListar(Scanner scan, Cargos control) {
+	CargoLista(Scanner scan, Cargos control) {
 		super(scan);
 		this.control = control;
 		titulo = "CARGOS-LISTAR";
