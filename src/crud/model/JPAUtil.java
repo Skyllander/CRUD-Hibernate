@@ -6,11 +6,32 @@ import javax.persistence.Persistence;
 
 public class JPAUtil {
 
-	private static EntityManagerFactory entityManagerFactory = 
-			Persistence.createEntityManagerFactory("sistemacrud");
+	public static EntityManager em;
+	private static EntityManagerFactory entityManagerFactory;
+	
+	static {
+		entityManagerFactory = 
+				Persistence.createEntityManagerFactory("sistemacrud");
+		em = new JPAUtil().getEntityManager();
+		init();
+	}
 	
 	public EntityManager getEntityManager() {
 		return entityManagerFactory.createEntityManager();
+	}
+	
+	private static void init() {
+		em.getTransaction().begin();
+	}
+	
+	public static void commit() {
+		em.getTransaction().commit();
+		init();
+	}
+	
+	public static void close() {
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 }

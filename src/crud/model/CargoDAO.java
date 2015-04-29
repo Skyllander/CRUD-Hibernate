@@ -13,92 +13,83 @@ import javax.persistence.RollbackException;
 
 public class CargoDAO extends DAO<Cargo>{
 	
-	public CargoDAO(EntityManager em) {
-		super(em, Cargo.class);
+	public CargoDAO() {
+		super(Cargo.class);
 	}
 	
-	public void cadastra(String nome) throws PersistenceException, NoResultException {
-		
-		Cargo cargo = new Cargo(nome);
-		
-		Query query = em.createQuery("from Cargo where nome = :n");
-		query.setParameter("n", nome);
-		
-		try {
-			query.getSingleResult();
-		}
-		catch(NoResultException e) {
-			Pattern p = Pattern.compile("[0-9]*.*[0-9]+.*[0-9]*");
-			Matcher m = p.matcher(nome);
-			if (nome.isEmpty() || m.matches()) 
-				throw new PersistenceException();
-			init();
-			adiciona(cargo);
-			commit();
-			throw e;
-		}
-		
-	}
 	
 	public <T>boolean editaNome(T tag, String nome) {
-		List<Cargo> encontrados;
-		if (tag.getClass().equals(String.class)) {
-			encontrados = buscaN((String)tag);
-			Pattern p = Pattern.compile("[0-9]*.*[0-9]+.*[0-9]*");
-			Matcher m = p.matcher(nome);
-			if (encontrados.isEmpty() || m.matches()) return false;
-		}
-		else {
-			encontrados = busca((Integer)tag);
-			if (encontrados.isEmpty()) return false;
-		}
-		boolean valido = true;
-		init();
-		for (Cargo enc : encontrados) {
-			try {
-				enc.nome = nome;
-			}
-			catch(EntityNotFoundException e){
-				valido = false;
-			}
-			commit();
-		}
-		return valido;
+		
+		return false;//TODO Refatorar metodo
+		
+		
+//		List<Cargo> encontrados;
+//		if (tag.getClass().equals(String.class)) {
+//			encontrados = buscaN((String)tag);
+//			Pattern p = Pattern.compile("[0-9]*.*[0-9]+.*[0-9]*");
+//			Matcher m = p.matcher(nome);
+//			if (encontrados.isEmpty() || m.matches()) return false;
+//		}
+//		else {
+//			encontrados = busca((Integer)tag);
+//			if (encontrados.isEmpty()) return false;
+//		}
+//		boolean valido = true;
+//		init();
+//		for (Cargo enc : encontrados) {
+//			try {
+//				enc.nome = nome;
+//			}
+//			catch(EntityNotFoundException e){
+//				valido = false;
+//			}
+//			commit();
+//		}
+//		return valido;
 	}
 	
 	public <T>boolean removeNome(T tag) {
-		List<Cargo> encontrados;
-		if (tag.getClass().equals(String.class)) {
-			encontrados = buscaN((String)tag);
-			if (encontrados.isEmpty()) return false;
-		}
-		else {
-			encontrados = busca((Integer)tag);
-			if (encontrados.isEmpty()) return false;
-		}
-		boolean valido = true;
-		init();
-		for (Cargo enc : encontrados)
-		{
-			try {
-				remove(enc);
-			}
-			catch(EntityNotFoundException e){
-				valido = false;
-			}
-			try {
-				commit();
-			}
-			catch (RollbackException e) {
-				valido = false;
-			}
-		}
-		return valido;
+		
+		
+		
+		return false;//TODO Refatorar este metodo
+//		List<Cargo> encontrados;
+//		if (tag.getClass().equals(String.class)) {
+//			encontrados = buscaN((String)tag);
+//			if (encontrados.isEmpty()) return false;
+//		}
+//		else {
+//			encontrados = busca((Integer)tag);
+//			if (encontrados.isEmpty()) return false;
+//		}
+//		boolean valido = true;
+//		init();
+//		for (Cargo enc : encontrados)
+//		{
+//			try {
+//				remove(enc);
+//			}
+//			catch(EntityNotFoundException e){
+//				valido = false;
+//			}
+//			try {
+//				commit();
+//			}
+//			catch (RollbackException e) {
+//				valido = false;
+//			}
+//		}
+//		return valido;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Cargo> buscaN(String nome) throws NoResultException {
-			return em.createQuery("from Cargo where nome = '" + nome + "'").getResultList();
+	public Cargo buscaPorNome(String nome) {
+		try {
+			return (Cargo)em.createQuery("from Cargo where nome = '" + nome + "'").getSingleResult();
+		}
+		catch(NoResultException e) {
+			return null;
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -107,10 +98,6 @@ public class CargoDAO extends DAO<Cargo>{
 		return query.getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Cargo> lista() {
-		Query query = em.createQuery("from Cargo order by nome");
-		return query.getResultList();
-	}
+
 	
 }

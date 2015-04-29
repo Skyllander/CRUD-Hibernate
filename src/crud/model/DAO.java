@@ -10,13 +10,16 @@ public class DAO<T> {
 	protected final EntityManager em;
 	private final Class<T> classe;
 	
-	public DAO(EntityManager em, Class<T> classe) {
-		this.em = em;
+	public DAO(Class<T> classe) {
+		this.em = JPAUtil.em;
 		this.classe = classe;
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<T> busca(Integer id) throws NoResultException{
+		//TODO Ignorar NoResultEception
 		Query query = em.createQuery("from " + classe.getName() + " where id = :nID ");
 		query.setParameter("nID", id);
 		return query.getResultList();
@@ -30,18 +33,12 @@ public class DAO<T> {
 	
 	public void adiciona(T t) {
 		em.persist(t);
+		JPAUtil.commit();
 	}
 	
 	public void remove(T t) {
 		em.remove(t);
-	}
-	
-	protected void init() {
-		em.getTransaction().begin();
-	}
-	
-	protected void commit() {
-		em.getTransaction().commit();
+		JPAUtil.commit();
 	}
 	
 	protected void close() {

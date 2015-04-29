@@ -2,6 +2,8 @@ package crud.view;
 
 import java.util.Scanner;
 
+import crud.model.JPAUtil;
+
 public class Main {
 
 	public static void main(String args[]) {
@@ -9,6 +11,7 @@ public class Main {
 		MenuPrincipal menu = new MenuPrincipal(user_scan);
 		menu.init();
 		user_scan.close();
+		JPAUtil.close();
 	}
 	
 }

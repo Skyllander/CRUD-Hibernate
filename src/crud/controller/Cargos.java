@@ -1,19 +1,20 @@
  package crud.controller;
 
 import java.util.ArrayList;
-
 import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import crud.model.*;
+import execoes.ValidacaoException;
 
 public class Cargos {
 	
 	CargoDAO dao;
 	
 	public Cargos() {
-		dao = new CargoDAO(new JPAUtil().getEntityManager());
+		dao = new CargoDAO();
 	}
 	
 	public <T>boolean editaNome(T tag, String nome) {
@@ -24,16 +25,18 @@ public class Cargos {
 		return dao.removeNome(tag);
 	}
 	
-	public boolean cadastra(String nome) {
+	public boolean cadastra(String nome) {//TODO Retorna mensagem objeto de erro/sucesso
 		
-		boolean ok = false;
+		Cargo cargo = new Cargo();
+		cargo.nome = nome;
+		
+		boolean ok = true;
 		try{
-			dao.cadastra(nome);
+			cargo.cadastra();
 		}
-		catch(NoResultException e) {
-			ok = true;
-		}
-		catch(PersistenceException e) {
+		catch(ValidacaoException e) {
+			e.getMessage();
+			ok = false;
 		}
 		return ok;
 	}
