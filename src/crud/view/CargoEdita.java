@@ -17,16 +17,7 @@ public class CargoEdita extends View {
 	}
 	
 	private <T>void editaNome(T tag, String nome) {
-		if (!nome.isEmpty()) {
-			if (control.editaNome(tag, nome)) {
-				System.out.println("[*Alteracao feita*]");
-			}
-			else System.out.println("[*Nao encontrado*]");
-		}
-		else {
-			System.out.println("[*Novo nome deve ser especificado*]");
-			System.out.println("[*Numeros nao sao permitidos*]");
-		}
+		System.out.println("[*" + control.editaCargo(tag, nome) + "*]");
 	}
 	
 	public void init() {

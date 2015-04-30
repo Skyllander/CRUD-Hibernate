@@ -1,33 +1,51 @@
- package crud.controller;
+package crud.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-
 import crud.model.*;
 import execoes.ValidationException;
 
 public class Cargos {
-	
-	CargoDAO dao;
-	
+
 	public Cargos() {
-		dao = new CargoDAO();
+
 	}
-	
-	public <T>boolean editaNome(T tag, String nome) {
-		return dao.editaNome(tag, nome);
+
+	public <T>String editaCargo(T tag, String nome) {
+		Cargo cargo;
+		if (tag.getClass().equals(String.class)) {
+			cargo = Cargo.buscaPorNome((String)tag);
+		}
+		else cargo = Cargo.buscaPorId((Integer)tag);
+		try {
+			cargo.editaNome(nome);
+		}
+		catch(ValidationException e) {
+			return e.getMessage();
+		}
+		catch(NullPointerException e) {
+			return "Nao encontrado";
+		}
+		return "Editado com Sucesso";
 	}
-	
-	public <T>boolean removeNome(T tag) {
-		return dao.removeNome(tag);
+
+	public <T>String removeCargo(T tag) {
+		Cargo cargo;
+		if (tag.getClass().equals(String.class)) {
+			cargo = Cargo.buscaPorNome((String)tag);
+		}
+		else cargo = Cargo.buscaPorId((Integer)tag);
+		try {
+			cargo.remove();
+		}
+		catch(NullPointerException e) {
+			return "Nao encontrado";
+		}
+		return "Removido com sucesso";
 	}
-	
-	//TODO Metodos "semelhantes" retornando String
+
 	public String cadastra(String nome) {
-		
+
 		Cargo cargo = new Cargo();
 		cargo.nome = nome;
 		try{
@@ -38,23 +56,23 @@ public class Cargos {
 		}
 		return "Inserido com sucesso";
 	}
-	
-	public List<String> listaNome() {
-		List<Cargo> lista = dao.lista();
+
+	public List<String> listaNomeOrdenado() {
+		List<Cargo> lista = Cargo.listaOrdenadoPorNome();
 		List<String> nomes = new ArrayList<String>();
 		for (Cargo c : lista) {
 			nomes.add(c.nome);
 		}
 		return nomes;
 	}
-	
+
 	public List<Integer> listaID() {
-		List<Cargo> lista = dao.lista();
+		List<Cargo> lista = Cargo.listaOrdenadoPorNome();
 		List<Integer> ids = new ArrayList<Integer>();
 		for (Cargo c : lista) {
 			ids.add(c.id);
 		}
 		return ids;
 	}
-	
+
 }

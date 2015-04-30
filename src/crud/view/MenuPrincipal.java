@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MenuPrincipal extends View {
 
-	MenuCargos mCargos;
+	private final MenuCargos mCargos;
 	
 	MenuPrincipal(Scanner scan) {
 		super(scan);

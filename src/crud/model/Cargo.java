@@ -1,5 +1,6 @@
 package crud.model;
 
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,7 @@ import execoes.ValidationException;
 public class Cargo{
 
 	@Transient
-	private CargoDAO dao = new CargoDAO();
+	private static CargoDAO dao = new CargoDAO();
 
 	@Id
 	@GeneratedValue
@@ -43,8 +44,44 @@ public class Cargo{
 	public Cargo (String nome) {
 		this.nome = nome;
 	}
+	
+	public void cadastra() {
+		validar();
+		dao.adiciona(this);
+	}
 
-	private void validarCargoMesmoNome(){
+	public void remove() {
+		dao.remove(this);
+	}
+
+	public <T>void editaNome(String nome) {
+		dao.detach(this);
+		this.nome = nome;
+		validar();
+		dao.merge(this);
+		dao.commit();
+	}
+
+	public static List<Cargo> listaOrdenadoPorNome() {
+		return dao.listaOrdenadoPorNome();
+	}
+
+	public static Cargo buscaPorNome(String nome) {
+		return dao.buscaPorNome(nome);
+	}
+
+	public static Cargo buscaPorId(Integer id) {
+		return dao.buscaPorId(id);
+	}
+
+	private void validar() {
+		validarHibernateValidator();
+		validarCargoMesmoNome();
+		validarNomeComNumeros();
+		validarInicioMaiscula();
+	}
+
+	private void validarCargoMesmoNome() {
 
 		Cargo cargoMesmoNome = dao.buscaPorNome(this.nome);
 
@@ -52,6 +89,16 @@ public class Cargo{
 			throw new ValidationException("Nome de usuario ja existente");
 		}
 
+	}
+	
+	private void validarInicioMaiscula() {
+
+		Pattern p = Pattern.compile("[A-Z]+.*");
+		Matcher m = p.matcher(nome);
+
+		if (!m.matches()) {
+			throw new ValidationException("Nome deve ser iniciado com letra maiuscula");
+		}
 	}
 
 	private void validarNomeComNumeros() {
@@ -70,20 +117,6 @@ public class Cargo{
 			System.out.println(constraintViolation.getMessage());
 			throw new ValidationException("Campo Nome obrigatorio");
 		}
-	}
-
-	private void validar() {
-		validarHibernateValidator();
-		validarCargoMesmoNome();
-		validarNomeComNumeros();
-
-	}
-
-	public void cadastra() {
-
-		validar();
-		dao.adiciona(this);
-
 	}
 
 }

@@ -6,10 +6,10 @@ import crud.controller.Cargos;
 
 public class MenuCargos extends View {
 	
-	private CargoCadastra cadastro;
-	private CargoEdita edicao;
-	private CargoLista listagem;
-	private CargoRemove remocao;
+	private final CargoCadastra cadastro;
+	private final CargoEdita edicao;
+	private final CargoLista listagem;
+	private final CargoRemove remocao;
 	
 	private final Cargos control;
 	

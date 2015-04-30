@@ -15,7 +15,7 @@ public class CargoLista extends View
 	}
 	
 	private void lista() {
-		List<String> consultaN = control.listaNome();
+		List<String> consultaN = control.listaNomeOrdenado();
 		List<Integer> consultaID = control.listaID();
 		printMark();
 		if (!consultaID.isEmpty()) {
