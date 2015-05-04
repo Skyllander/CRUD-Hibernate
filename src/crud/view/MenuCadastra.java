@@ -2,16 +2,16 @@ package crud.view;
 
 import java.util.Scanner;
 
-import crud.controller.Cargos;
+import crud.controller.Controller;
 
-public class CargoCadastra extends View {
+public class MenuCadastra<T> extends View {
 	
-	private final Cargos control;
+	private final Controller<T> control;
 	
-	CargoCadastra(Scanner scan, Cargos control) {
+	MenuCadastra(Scanner scan, Controller<T> control, String titulo) {
 		super(scan);
 		this.control = control;
-		titulo = "CARGOS-CADASTRAR";
+		this.titulo = titulo;
 	}
 	
 	private String cadastra() {

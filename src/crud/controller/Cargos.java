@@ -1,47 +1,43 @@
 package crud.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import crud.model.*;
 import execoes.ValidationException;
 
-public class Cargos {
+public class Cargos implements Controller<Cargo> {
 
 	public Cargos() {
-
+	}
+	
+	private <T>Cargo buscaPorNomeOuId(T tag) {
+		if (tag.getClass().equals(String.class)) {
+			return Cargo.buscaPorNome((String)tag);
+		}
+		else return Cargo.buscaPorId((Integer)tag);
 	}
 
-	public <T>String editaCargo(T tag, String nome) {
-		Cargo cargo;
-		if (tag.getClass().equals(String.class)) {
-			cargo = Cargo.buscaPorNome((String)tag);
+	public <T>String edita(T tag, String nome) {
+		Cargo cargo = buscaPorNomeOuId(tag);
+		if (cargo == null) return "Nao econtrado";
+		else {
+			try {
+				cargo.editaNome(nome);
+			}
+			catch(ValidationException e) {
+				return e.getMessage();
+			}
+			return "Editado com Sucesso";
 		}
-		else cargo = Cargo.buscaPorId((Integer)tag);
-		try {
-			cargo.editaNome(nome);
-		}
-		catch(ValidationException e) {
-			return e.getMessage();
-		}
-		catch(NullPointerException e) {
-			return "Nao encontrado";
-		}
-		return "Editado com Sucesso";
 	}
 
-	public <T>String removeCargo(T tag) {
-		Cargo cargo;
-		if (tag.getClass().equals(String.class)) {
-			cargo = Cargo.buscaPorNome((String)tag);
-		}
-		else cargo = Cargo.buscaPorId((Integer)tag);
-		try {
+	public <T>String remove(T tag) {
+		Cargo cargo = buscaPorNomeOuId(tag);
+		if (cargo == null) return "Nao econtrado";
+		else {
 			cargo.remove();
+			return "Removido com sucesso";
 		}
-		catch(NullPointerException e) {
-			return "Nao encontrado";
-		}
-		return "Removido com sucesso";
 	}
 
 	public String cadastra(String nome) {
@@ -56,23 +52,9 @@ public class Cargos {
 		}
 		return "Inserido com sucesso";
 	}
-
-	public List<String> listaNomeOrdenado() {
-		List<Cargo> lista = Cargo.listaOrdenadoPorNome();
-		List<String> nomes = new ArrayList<String>();
-		for (Cargo c : lista) {
-			nomes.add(c.nome);
-		}
-		return nomes;
-	}
-
-	public List<Integer> listaID() {
-		List<Cargo> lista = Cargo.listaOrdenadoPorNome();
-		List<Integer> ids = new ArrayList<Integer>();
-		for (Cargo c : lista) {
-			ids.add(c.id);
-		}
-		return ids;
+	
+	public List<Cargo> listaOrdenadoPorNome() {
+		return Cargo.listaOrdenadoPorNome();
 	}
 
 }

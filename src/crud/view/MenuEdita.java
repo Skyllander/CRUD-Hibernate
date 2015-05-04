@@ -2,22 +2,22 @@ package crud.view;
 
 import java.util.Scanner;
 
-import crud.controller.Cargos;
+import crud.controller.Controller;
 
-public class CargoEdita extends View {
+public class MenuEdita<E> extends View {
 	
-	private final Cargos control;
+	private final Controller<E> control;
 	
-	CargoEdita(Scanner scan, Cargos control) {
+	MenuEdita(Scanner scan, Controller<E> control, String titulo) {
 		super(scan);
 		this.control = control;
 		opcoes.add("Buscar ID");
 		opcoes.add("Buscar Nome");
-		titulo = "CARGOS-EDITAR";
+		this.titulo = titulo;
 	}
 	
 	private <T>void editaNome(T tag, String nome) {
-		System.out.println("[*" + control.editaCargo(tag, nome) + "*]");
+		System.out.println("[*" + control.edita(tag, nome) + "*]");
 	}
 	
 	public void init() {

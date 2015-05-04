@@ -4,12 +4,15 @@ import java.util.Scanner;
 
 public class MenuPrincipal extends View {
 
-	private final MenuCargos mCargos;
+	private final MenuCargo mCargo;
+	private final MenuPerfil mPerfil;
 	
 	MenuPrincipal(Scanner scan) {
 		super(scan);
 		opcoes.add("Cargos");
-		mCargos = new MenuCargos(user_scan);
+		opcoes.add("Perfis");
+		mCargo = new MenuCargo(user_scan);
+		mPerfil = new MenuPerfil(user_scan);
 		titulo = "MENU-PRINCIPAL";
 	}
 	
@@ -22,7 +25,12 @@ public class MenuPrincipal extends View {
 			switch(select)
 			{
 				case 1:
-					mCargos.init();
+					mCargo.init();
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 2:
+					mPerfil.init();
 					mostraTitulo();
 					select = listaOpcao();
 					break;

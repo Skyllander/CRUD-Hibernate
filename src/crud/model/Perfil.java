@@ -10,14 +10,14 @@ import org.hibernate.validator.constraints.NotBlank;
 import execoes.ValidationException;
 
 @Entity
-@Table(name = "CARGO", uniqueConstraints = {
+@Table(name = "PERFIL", uniqueConstraints = {
 		@UniqueConstraint(columnNames ="ID"),
 		@UniqueConstraint(columnNames = "NOME") })
 
-public class Cargo{
+public class Perfil {
 
 	@Transient
-	private static final CargoDAO dao = new CargoDAO();
+	private static final PerfilDAO dao = new PerfilDAO();
 
 	@Id
 	@GeneratedValue
@@ -28,11 +28,11 @@ public class Cargo{
 	@Column(name = "NOME", unique = true, nullable = false)
 	public String nome;
 
-	public Cargo() {
+	public Perfil() {
 
 	}
 
-	public Cargo (String nome) {
+	public Perfil (String nome) {
 		this.nome = nome;
 	}
 
@@ -53,15 +53,15 @@ public class Cargo{
 		dao.commit();
 	}
 
-	public static List<Cargo> listaOrdenadoPorNome() {
+	public static List<Perfil> listaOrdenadoPorNome() {
 		return dao.listaOrdenadoPorNome();
 	}
 
-	public static Cargo buscaPorNome(String nome) {
+	public static Perfil buscaPorNome(String nome) {
 		return dao.buscaPorNome(nome);
 	}
 
-	public static Cargo buscaPorId(Integer id) {
+	public static Perfil buscaPorId(Integer id) {
 		return dao.buscaPorId(id);
 	}
 
@@ -74,7 +74,7 @@ public class Cargo{
 
 	private void validarMesmoNome() {
 
-		Cargo mesmoNome = dao.buscaPorNome(this.nome);
+		Perfil mesmoNome = dao.buscaPorNome(this.nome);
 
 		if (mesmoNome != null) {
 			throw new ValidationException("Nome de usuario ja existente");
@@ -103,8 +103,8 @@ public class Cargo{
 	}
 
 	private void validarHibernateValidator () {
-		Set<ConstraintViolation<Cargo>> validate = JPAUtil.validate(this);
-		for (ConstraintViolation<Cargo> constraintViolation : validate) {
+		Set<ConstraintViolation<Perfil>> validate = JPAUtil.validate(this);
+		for (ConstraintViolation<Perfil> constraintViolation : validate) {
 			System.out.println(constraintViolation.getMessage());
 			throw new ValidationException("Campo Nome obrigatorio");
 		}

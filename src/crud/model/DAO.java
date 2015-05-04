@@ -4,13 +4,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-public class DAO<T> {
+public abstract class DAO<T> {
 
-	protected final EntityManager em;
+	protected EntityManager em;
 	private final Class<T> classe;
 
-	public DAO(Class<T> classe) {
-		this.em = JPAUtil.em;
+	DAO(Class<T> classe) {
+		this.em = JPAUtil.getEntityManager();
+		System.out.println("EM: " + em);
 		this.classe = classe;
 	}
 

@@ -14,7 +14,6 @@ public class Main {
 		Scanner user_scan = new Scanner(System.in);
 		MenuPrincipal menu = new MenuPrincipal(user_scan);
 		menu.init();
-		JPAUtil.close();
 		user_scan.close();
 	}
 	

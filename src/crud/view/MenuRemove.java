@@ -1,23 +1,22 @@
 package crud.view;
 
 import java.util.Scanner;
+import crud.controller.Controller;
 
-import crud.controller.Cargos;
+public class MenuRemove<E> extends View {
 
-public class CargoRemove extends View {
+	private final Controller<E> control;
 
-	private final Cargos control;
-
-	CargoRemove(Scanner scan, Cargos control) {
+	MenuRemove(Scanner scan, Controller<E> control, String titulo) {
 		super(scan);
 		this.control = control;
 		opcoes.add("Buscar ID");
 		opcoes.add("Buscar Nome");
-		titulo = "CARGOS-REMOVER";
+		this.titulo = titulo;
 	}
 
 	private <T>void removeCargo(T tag) {
-		System.out.println("[*" + control.removeCargo(tag) + "*]");
+		System.out.println("[*" + control.remove(tag) + "*]");
 	}
 
 	public void init() {

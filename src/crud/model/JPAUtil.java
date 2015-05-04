@@ -1,7 +1,6 @@
 package crud.model;
 
 import java.util.Set;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -10,29 +9,35 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.hibernate.SessionFactory;
 
 public class JPAUtil {
 
-	public static EntityManager em;
 	private static EntityManagerFactory entityManagerFactory;
+	public static EntityManager em;
 	private static ValidatorFactory validatorFactory;
 	public static Validator validator;
 
 	static {
+		System.out.println(em);
 		entityManagerFactory = 
 				Persistence.createEntityManagerFactory("sistemacrud");
+		System.out.println(em);
 		em = getEntityManager();
-
+		
+		System.out.println(em);
+		
 		validatorFactory = 
 				Validation.buildDefaultValidatorFactory();
 		validator = getValidator();
-
 		init();
 	}
 
 	public static EntityManager getEntityManager() {
 		return entityManagerFactory.createEntityManager();
+	}
+	
+	public EntityManager getEM() {
+		return em;
 	}
 
 	public static Validator getValidator() {
@@ -41,6 +46,10 @@ public class JPAUtil {
 
 	public static <T> Set<ConstraintViolation<T>> validate(T obj) {
 		return validator.validate(obj);
+	}
+	
+	public static void load() {
+		
 	}
 
 	private static void init() {

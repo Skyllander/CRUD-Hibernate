@@ -3,28 +3,30 @@ package crud.view;
 import java.util.Scanner;
 
 import crud.controller.Cargos;
+import crud.controller.Controller;
+import crud.model.Cargo;
 
-public class MenuCargos extends View {
+public class MenuCargo extends View {
 	
-	private final CargoCadastra cadastro;
-	private final CargoEdita edicao;
-	private final CargoLista listagem;
-	private final CargoRemove remocao;
+	private final MenuCadastra<Cargo> cadastro;
+	private final MenuEdita<Cargo> edicao;
+	private final MenuLista<Cargo> listagem;
+	private final MenuRemove<Cargo> remocao;
 	
-	private final Cargos control;
+	private final Controller<Cargo> control;
 	
-	MenuCargos(Scanner scan) {
+	MenuCargo(Scanner scan) {
 		super(scan);
 		control = new Cargos();
-		cadastro = new CargoCadastra(scan, control);
-		edicao = new CargoEdita(scan, control);
-		listagem = new CargoLista(scan, control);
-		remocao = new CargoRemove(scan, control);
+		cadastro = new MenuCadastra<Cargo>(scan, control, "CARGO-CADASTRAR");
+		edicao = new MenuEdita<Cargo>(scan, control, "CARGO-EDITAR");
+		listagem = new MenuLista<Cargo>(scan, control, "CARGO-LISTAR");
+		remocao = new MenuRemove<Cargo>(scan, control, "CARGO-REMOVER");
 		opcoes.add("Cadastrar");
 		opcoes.add("Listar");
 		opcoes.add("Editar");
 		opcoes.add("Remover");
-		titulo = "MENU-CARGOS";
+		titulo = "MENU-CARGO";
 	}
 	
 	public void init() {

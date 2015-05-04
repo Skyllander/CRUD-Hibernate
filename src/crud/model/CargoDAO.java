@@ -1,12 +1,13 @@
 package crud.model;
 
 import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public class CargoDAO extends DAO<Cargo>{
 
-	public CargoDAO() {
+	CargoDAO() {
 		super(Cargo.class);
 	}
 
@@ -15,6 +16,9 @@ public class CargoDAO extends DAO<Cargo>{
 			return (Cargo)em.createQuery("from Cargo where nome = '" + nome + "'").getSingleResult();
 		}
 		catch (NoResultException e) {
+			return null;
+		}
+		catch (NullPointerException e) {
 			return null;
 		}
 	}
