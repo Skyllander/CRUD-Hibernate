@@ -6,11 +6,10 @@ import javax.persistence.Query;
 
 public abstract class DAO<T> {
 
-	protected EntityManager em;
+	protected static final EntityManager em = JPAUtil.em;
 	private final Class<T> classe;
 
 	DAO(Class<T> classe) {
-		this.em = JPAUtil.getEntityManager();
 		System.out.println("EM: " + em);
 		this.classe = classe;
 	}

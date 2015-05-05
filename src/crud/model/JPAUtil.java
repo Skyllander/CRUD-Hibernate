@@ -10,36 +10,21 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 
-public class JPAUtil {
-
+public abstract class JPAUtil {
+	
 	private static EntityManagerFactory entityManagerFactory;
 	public static EntityManager em;
-	private static ValidatorFactory validatorFactory;
-	public static Validator validator;
-
+	
+	private static ValidatorFactory validatorFactory =  
+			Validation.buildDefaultValidatorFactory();
+	public static Validator validator = getValidator();
+	
 	static {
-		System.out.println(em);
-		entityManagerFactory = 
-				Persistence.createEntityManagerFactory("sistemacrud");
-		System.out.println(em);
+		entityManagerFactory = Persistence.createEntityManagerFactory("sistemacrud");
 		em = getEntityManager();
-		
-		System.out.println(em);
-		
-		validatorFactory = 
-				Validation.buildDefaultValidatorFactory();
-		validator = getValidator();
 		init();
 	}
-
-	public static EntityManager getEntityManager() {
-		return entityManagerFactory.createEntityManager();
-	}
 	
-	public EntityManager getEM() {
-		return em;
-	}
-
 	public static Validator getValidator() {
 		return validatorFactory.getValidator();
 	}
@@ -47,21 +32,21 @@ public class JPAUtil {
 	public static <T> Set<ConstraintViolation<T>> validate(T obj) {
 		return validator.validate(obj);
 	}
-	
-	public static void load() {
-		
+
+	public static EntityManager getEntityManager() {
+		return entityManagerFactory.createEntityManager();
 	}
 
 	private static void init() {
 		em.getTransaction().begin();
 	}
 
-	public static void commit() {
+	public void commit() {
 		em.getTransaction().commit();
 		init();
 	}
 
-	public static void close() {
+	public void close() {
 		em.getTransaction().commit();
 		em.close();
 	}
