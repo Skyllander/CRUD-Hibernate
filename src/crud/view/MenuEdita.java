@@ -30,7 +30,7 @@ public class MenuEdita<E> extends View {
 			{
 				case 1:
 					try {
-						editaNome(Integer.parseInt(recebeCampo("ID")),recebeCampo("Novo Nome"));
+						editaNome(Integer.parseInt(recebeCampo("ID").trim()),recebeCampo("Novo Nome").trim());
 					}
 					catch (NumberFormatException e) {
 						System.out.println("[*Formato de ID invalido*]");

@@ -2,11 +2,8 @@ package crud.model;
 
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.persistence.*;
 import javax.validation.ConstraintViolation;
-import org.hibernate.validator.constraints.NotBlank;
 import execoes.ValidationException;
 
 @Entity
@@ -14,19 +11,10 @@ import execoes.ValidationException;
 		@UniqueConstraint(columnNames ="ID"),
 		@UniqueConstraint(columnNames = "NOME") })
 
-public class Cargo{
+public class Cargo extends Model{
 
 	@Transient
 	private static final CargoDAO dao = new CargoDAO();
-
-	@Id
-	@GeneratedValue
-	@Column(name = "ID", unique = true, nullable = false)
-	public Integer id;
-
-	@NotBlank
-	@Column(name = "NOME", unique = true, nullable = false)
-	public String nome;
 
 	public Cargo() {
 
@@ -68,8 +56,7 @@ public class Cargo{
 	private void validar() {
 		validarHibernateValidator();
 		validarMesmoNome();
-		validarNomeComNumeros();
-		validarInicioMaiscula();
+		Validate.check(this.nome);
 	}
 
 	private void validarMesmoNome() {
@@ -82,28 +69,8 @@ public class Cargo{
 
 	}
 
-	private void validarInicioMaiscula() {
-
-		Pattern p = Pattern.compile("[A-Z]+.*");
-		Matcher m = p.matcher(nome);
-
-		if (!m.matches()) {
-			throw new ValidationException("Nome deve ser iniciado com letra maiuscula");
-		}
-	}
-
-	private void validarNomeComNumeros() {
-
-		Pattern p = Pattern.compile("[0-9]*.*[0-9]+.*[0-9]*");
-		Matcher m = p.matcher(nome);
-
-		if (m.matches()) {
-			throw new ValidationException("Nome nao pode conter numeros");
-		}
-	}
-
 	private void validarHibernateValidator () {
-		Set<ConstraintViolation<Cargo>> validate = JPAUtil.validate(this);
+		Set<ConstraintViolation<Cargo>> validate = Validate.hibernateCheck(this);
 		for (ConstraintViolation<Cargo> constraintViolation : validate) {
 			System.out.println(constraintViolation.getMessage());
 			throw new ValidationException("Campo Nome obrigatorio");

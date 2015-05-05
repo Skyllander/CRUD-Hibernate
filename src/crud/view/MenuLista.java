@@ -7,6 +7,7 @@ import java.util.Scanner;
 import crud.controller.Controller;
 import crud.model.Cargo;
 import crud.model.Perfil;
+import crud.model.Usuario;
 
 public class MenuLista<E> extends View
 {
@@ -28,6 +29,13 @@ public class MenuLista<E> extends View
 			if(obj.get(0).getClass().equals(Perfil.class)) {
 				List<Perfil> perfis = (List<Perfil>) obj;
 				for (Perfil perfil : perfis) {
+					consultaID.add(perfil.id);
+					consultaN.add(perfil.nome);
+				}
+			}
+			else if(obj.get(0).getClass().equals(Usuario.class)) {
+				List<Usuario> perfis = (List<Usuario>) obj;
+				for (Usuario perfil : perfis) {
 					consultaID.add(perfil.id);
 					consultaN.add(perfil.nome);
 				}

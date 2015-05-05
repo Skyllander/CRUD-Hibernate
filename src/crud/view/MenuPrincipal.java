@@ -6,13 +6,16 @@ public class MenuPrincipal extends View {
 
 	private final MenuCargo mCargo;
 	private final MenuPerfil mPerfil;
+	private final MenuUsuario mUsuario;
 	
 	MenuPrincipal(Scanner scan) {
 		super(scan);
 		opcoes.add("Cargos");
 		opcoes.add("Perfis");
+		opcoes.add("Usuarios");
 		mCargo = new MenuCargo(user_scan);
 		mPerfil = new MenuPerfil(user_scan);
+		mUsuario = new MenuUsuario(user_scan);
 		titulo = "MENU-PRINCIPAL";
 	}
 	
@@ -31,6 +34,11 @@ public class MenuPrincipal extends View {
 					break;
 				case 2:
 					mPerfil.init();
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 3:
+					mUsuario.init();
 					mostraTitulo();
 					select = listaOpcao();
 					break;

@@ -3,7 +3,7 @@ package crud.view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class View {
+public abstract class View {
 	
 	Scanner user_scan;
 	String titulo;

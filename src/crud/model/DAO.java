@@ -10,7 +10,6 @@ public abstract class DAO<T> {
 	private final Class<T> classe;
 
 	DAO(Class<T> classe) {
-		System.out.println("EM: " + em);
 		this.classe = classe;
 	}
 

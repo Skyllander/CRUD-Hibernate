@@ -15,7 +15,7 @@ public class MenuCadastra<T> extends View {
 	}
 	
 	private String cadastra() {
-		return control.cadastra(recebeCampo("Nome*"));
+		return control.cadastra(recebeCampo("Nome*").trim());
 	}
 	
 	public void init() {
