@@ -1,5 +1,6 @@
 package crud.model;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.ConstraintViolation;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 import execoes.ValidationException;
@@ -23,17 +26,20 @@ public class Usuario extends Model{
 	
 	@NotBlank
 	@Column(name = "CPF")
-	public String CPF;
+	public String cpf;
 	
 	@Column(name = "DATA_NASCIMENTO")
 	public Calendar dataNascimento;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "SEXO")
 	public Sexo sexo;
 	
-	
+	@NotNull
 	@ManyToOne
 	public Cargo cargo;
+	
+	//TODO Algo estranho na busca de perfis
 	
 	@ManyToMany
 	public List<Perfil> perfis;
@@ -41,22 +47,65 @@ public class Usuario extends Model{
 	@Column(name = "DATA_CADASTRO")
 	public Calendar dataCadastro;
 	
+	@Type(type = "sim_nao")
+	@Column(name = "ACTIVE")
+	public boolean active;
+	
 	public Usuario() {
 		perfis = new ArrayList<Perfil>();
+		active = true;
 	}
 
 	public Usuario (String nome) {
 		this.nome = nome;
 		perfis = new ArrayList<Perfil>();
+		active = true;
 	}
 
-	public void cadastra() {
+	public void cadastra(String dados) {
+		
+		String[] entrada = dados.split(",");
+		Perfil encontrado = null;
+		String nomePerfil = "";
+		
+		for (String s : entrada) {
+			System.out.println(s);
+		}
+		
+		nome = entrada[0].trim();
+		cpf = entrada[1].trim();
+		dataNascimento = Calendar.getInstance();
+		
+		try {
+			sexo = Sexo.valueOf(entrada[3].trim());
+		}
+		catch (IllegalArgumentException e) {
+			throw new ValidationException("Sexo invalido");
+		}
+		
+		cargo = Cargo.buscaPorNome(entrada[4].trim());
+	
+		for(int i = 5; i < entrada.length; ++i) {
+			nomePerfil = entrada[i].trim();
+			if (!nomePerfil.isEmpty()) {
+				encontrado = Perfil.buscaPorNome(nomePerfil);
+				if (encontrado != null) perfis.add(encontrado);
+				else {
+					throw new ValidationException("Perfil '" + nomePerfil + "' nao existe");
+				}
+				encontrado = null;
+			}
+		}
+		
+		dataCadastro = Calendar.getInstance();
+		
 		validar();
 		dao.adiciona(this);
 	}
 
 	public void remove() {
-		dao.remove(this);
+		this.active = false;
+		//dao.remove(this);
 	}
 
 	public <T>void editaNome(String nome) {
@@ -80,17 +129,27 @@ public class Usuario extends Model{
 	}
 
 	private void validar() {
+		Validate.checkNome(this.nome);
+		Validate.checkNumero(this.cpf);
+		validaCargoObrigatorio();
 		validarHibernateValidator();
-		validarMesmoNome();
-		Validate.check(this.nome);
+		validarMesmoCPF();
+	}
+	
+	private void validaCargoObrigatorio() {
+		
+		if (cargo == null) {
+			throw new ValidationException("Cargo nao encontrado");
+		}
+		
 	}
 
-	private void validarMesmoNome() {
+	private void validarMesmoCPF() {
 
-		Usuario mesmoNome = dao.buscaPorNome(this.nome);
+		Usuario mesmoNome = dao.buscaPorCPF(this.cpf);
 
 		if (mesmoNome != null) {
-			throw new ValidationException("Nome de usuario ja existente");
+			throw new ValidationException("CPF de usuario ja cadastrado");
 		}
 
 	}
@@ -99,7 +158,7 @@ public class Usuario extends Model{
 		Set<ConstraintViolation<Usuario>> validate = Validate.hibernateCheck(this);
 		for (ConstraintViolation<Usuario> constraintViolation : validate) {
 			System.out.println(constraintViolation.getMessage());
-			throw new ValidationException("Campo Nome obrigatorio");
+			throw new ValidationException("Campo obrigatorio (*) foi deixado em branco");
 		}
 	}
 	

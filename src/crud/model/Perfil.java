@@ -55,8 +55,8 @@ public class Perfil extends Model{
 
 	private void validar() {
 		validarHibernateValidator();
+		Validate.checkNome(this.nome);
 		validarMesmoNome();
-		Validate.check(this.nome);
 	}
 
 	private void validarMesmoNome() {

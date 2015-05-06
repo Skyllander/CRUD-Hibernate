@@ -3,6 +3,8 @@ package crud.view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import execoes.ValidationException;
+
 public abstract class View {
 	
 	Scanner user_scan;
@@ -29,6 +31,14 @@ public abstract class View {
 		System.out.print(s + ": ");
 		String input = user_scan.nextLine();
 		System.out.println();
+		return input;
+	}
+	
+	protected String recebeCampoDeUsuario(String s) {
+		System.out.print(s + ": ");
+		String input = user_scan.nextLine();
+		System.out.println();
+		if (input.contains(",")) throw new ValidationException("Entrada nao pode conter (,)");
 		return input;
 	}
 	
@@ -86,6 +96,5 @@ public abstract class View {
 		System.out.println();
 		System.out.print("Entrada: ");
 	}
-	
 	
 }

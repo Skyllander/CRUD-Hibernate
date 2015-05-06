@@ -8,7 +8,7 @@ public interface Controller<E> {
 
 	public <T>String remove(T tag);
 
-	public String cadastra(String nome);
+	public String cadastra(String entrada);
 	
 	public List<E> listaOrdenadoPorNome();
 	

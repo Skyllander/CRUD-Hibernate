@@ -40,10 +40,10 @@ public class Cargos implements Controller<Cargo> {
 		}
 	}
 
-	public String cadastra(String nome) {
+	public String cadastra(String entrada) {
 
 		Cargo cargo = new Cargo();
-		cargo.nome = nome;
+		cargo.nome = entrada;
 		try{
 			cargo.cadastra();
 		}

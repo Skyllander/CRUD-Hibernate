@@ -1,7 +1,9 @@
 package crud.view;
 
 import java.util.Scanner;
+
 import crud.controller.Usuarios;
+import execoes.ValidationException;
 
 public class MenuCadastraUsuario extends View {
 	
@@ -14,20 +16,24 @@ public class MenuCadastraUsuario extends View {
 	}
 	
 	private String cadastra() {
-		/*String[] entrada = new String[6];
-		entrada[0] = recebeCampo("Nome*").trim();
-		entrada[1] = recebeCampo("CPF*").trim();
-		entrada[2] = recebeCampo("Data de Nascimento").trim();
-		entrada[3] = recebeCampo("Sexo").trim();
-		entrada[4] = recebeCampo("Cargo").trim();
-		entrada[5] = recebeCampo("Perfil").trim();*/
 		String entrada = new String();
-		entrada = entrada.concat(recebeCampo("Nome*").trim() + "_");
-		entrada = entrada.concat(recebeCampo("CPF*").trim() + "_");
-		entrada = entrada.concat(recebeCampo("Data de Nascimento").trim() + "_");
-		entrada = entrada.concat(recebeCampo("Sexo").trim() + "_");
-		entrada = entrada.concat(recebeCampo("Cargo").trim() + "_");
-		entrada = entrada.concat(recebeCampo("Perfil").trim() + "_");
+		String delimiter = " ,";
+		String entPerfil = new String();
+		try {
+			entrada = entrada.concat(recebeCampoDeUsuario("Nome*").trim() + delimiter);
+			entrada = entrada.concat(recebeCampoDeUsuario("CPF*").trim() + delimiter);
+			entrada = entrada.concat(recebeCampoDeUsuario("Data de Nascimento").trim() + delimiter);
+			entrada = entrada.concat(recebeCampoDeUsuario("Sexo").trim() + delimiter);
+			entrada = entrada.concat(recebeCampoDeUsuario("Cargo*").trim() + delimiter);
+			System.out.println("-> Deixe em branco para finalizar o cadastro");
+			while (!entPerfil.equals(delimiter)) {
+				entPerfil = recebeCampoDeUsuario("Perfil").trim() + delimiter;
+				entrada = entrada.concat(entPerfil);
+			}
+		}
+		catch (ValidationException e){
+			return e.getMessage();
+		}
 		System.out.println(entrada);
 		return control.cadastra(entrada);
 	}

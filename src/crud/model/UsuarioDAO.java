@@ -22,6 +22,18 @@ public class UsuarioDAO extends DAO<Usuario>{
 			return null;
 		}
 	}
+	
+	public Usuario buscaPorCPF(String cpf) {
+		try {
+			return (Usuario)em.createQuery("from Usuario where cpf = '" + cpf + "'").getSingleResult();
+		}
+		catch (NoResultException e) {
+			return null;
+		}
+		catch (NullPointerException e) {
+			return null;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Usuario> listaOrdenadoPorNome() {

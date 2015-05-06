@@ -19,13 +19,26 @@ public abstract class Validate {
 		return validatorFactory.getValidator();
 	}
 	
-	public static void check(String nome) {
+	public static void checkNumero(String numero) {
+		validarNumeroComLetra(numero);
+	}
+	
+	public static void checkNome(String nome) {
 		validarInicioMaiscula(nome);
 		validarNomeComNumeros(nome);
 	}
 	
 	public static <T> Set<ConstraintViolation<T>> hibernateCheck(T obj) {
 		return validator.validate(obj);
+	}
+	
+	public static void validarNumeroComLetra(String numero) {
+		Pattern p = Pattern.compile("[a-zA-Z]*.*[a-zA-Z]+.*[a-zA-Z]*");
+		Matcher m = p.matcher(numero);
+
+		if (m.matches()) {
+			throw new ValidationException("Nome nao pode conter numeros");
+		}
 	}
 
 	private static void validarInicioMaiscula(String nome) {

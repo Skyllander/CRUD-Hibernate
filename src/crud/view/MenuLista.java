@@ -3,11 +3,9 @@ package crud.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import crud.controller.Controller;
 import crud.model.Cargo;
 import crud.model.Perfil;
-import crud.model.Usuario;
 
 public class MenuLista<E> extends View
 {
@@ -22,20 +20,13 @@ public class MenuLista<E> extends View
 		this.control = control;
 		this.titulo = titulo;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void setAtributos(List<E> obj) {
 		if (!obj.isEmpty()) {
 			if(obj.get(0).getClass().equals(Perfil.class)) {
 				List<Perfil> perfis = (List<Perfil>) obj;
 				for (Perfil perfil : perfis) {
-					consultaID.add(perfil.id);
-					consultaN.add(perfil.nome);
-				}
-			}
-			else if(obj.get(0).getClass().equals(Usuario.class)) {
-				List<Usuario> perfis = (List<Usuario>) obj;
-				for (Usuario perfil : perfis) {
 					consultaID.add(perfil.id);
 					consultaN.add(perfil.nome);
 				}
@@ -49,12 +40,12 @@ public class MenuLista<E> extends View
 			}
 		}
 	}
-	
+
 	private void limpaAtributos() {
 		consultaID.clear();
 		consultaN.clear();
 	}
-	
+
 	private void lista() {
 		setAtributos(control.listaOrdenadoPorNome());
 		printMark();
@@ -70,10 +61,10 @@ public class MenuLista<E> extends View
 		}
 		limpaAtributos();
 	}
-	
+
 	public void init() {
 		mostraTitulo();
 		lista();
 	}
-	
+
 }

@@ -1,8 +1,6 @@
 package crud.view;
 
 import java.util.Scanner;
-
-import crud.controller.Controller;
 import crud.controller.Perfis;
 import crud.model.Perfil;
 
@@ -13,7 +11,7 @@ public class MenuPerfil extends View {
 	private final MenuLista<Perfil> listagem;
 	private final MenuRemove<Perfil> remocao;
 	
-	private final Controller<Perfil> control;
+	private final Perfis control;
 	
 	MenuPerfil(Scanner scan) {
 		super(scan);

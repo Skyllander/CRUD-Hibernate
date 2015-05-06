@@ -39,10 +39,10 @@ public class Perfis implements Controller<Perfil> {
 		}
 	}
 
-	public String cadastra(String nome) {
+	public String cadastra(String entrada) {
 
 		Perfil perfil = new Perfil();
-		perfil.nome = nome;
+		perfil.nome = entrada;
 		try{
 			perfil.cadastra();
 		}

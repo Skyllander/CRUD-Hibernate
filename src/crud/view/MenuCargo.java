@@ -3,7 +3,6 @@ package crud.view;
 import java.util.Scanner;
 
 import crud.controller.Cargos;
-import crud.controller.Controller;
 import crud.model.Cargo;
 
 public class MenuCargo extends View {
@@ -13,7 +12,7 @@ public class MenuCargo extends View {
 	private final MenuLista<Cargo> listagem;
 	private final MenuRemove<Cargo> remocao;
 	
-	private final Controller<Cargo> control;
+	private final Cargos control;
 	
 	MenuCargo(Scanner scan) {
 		super(scan);

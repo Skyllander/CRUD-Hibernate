@@ -1,9 +1,7 @@
 package crud.controller;
 
-import java.util.Calendar;
 import java.util.List;
-
-import crud.model.*;
+import crud.model.Usuario;
 import execoes.ValidationException;
 
 public class Usuarios implements Controller<Usuario> {
@@ -41,25 +39,12 @@ public class Usuarios implements Controller<Usuario> {
 		}
 	}
 
-	public String cadastra(String nome) {
+	public String cadastra(String dados) {
 
-		String[] entrada = nome.split("_");
-		for (String s : entrada) {
-			System.out.println(s);
-		}
-		
 		Usuario usuario = new Usuario();
 		
-		usuario.nome = entrada[0];
-		usuario.CPF = entrada[1];
-		usuario.dataNascimento = Calendar.getInstance();
-		usuario.sexo = Sexo.valueOf(entrada[3]);
-		usuario.cargo = Cargo.buscaPorNome(entrada[4]);
-		usuario.perfis.add(Perfil.buscaPorNome(entrada[5]));
-		usuario.dataCadastro = Calendar.getInstance();
-		
 		try{
-			usuario.cadastra();
+			usuario.cadastra(dados);
 		}
 		catch(ValidationException e) {
 			return e.getMessage();
