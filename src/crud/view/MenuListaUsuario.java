@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
+
 import crud.controller.Usuarios;
 import crud.model.Cargo;
 import crud.model.Perfil;
@@ -33,6 +34,9 @@ public class MenuListaUsuario extends View
 		consultaSexo = new ArrayList<Sexo>();
 		consultaCargo = new ArrayList<Cargo>();
 		consultaPerfil = new ArrayList<List<Perfil>>();
+		opcoes.add("Nome");
+		opcoes.add("Cargo");
+		opcoes.add("Perfil");
 		this.control = control;
 		this.titulo = titulo;
 	}
@@ -71,9 +75,24 @@ public class MenuListaUsuario extends View
 		consultaCargo.clear();
 		consultaPerfil.clear();
 	}
+	
+	private void listaNome(String nome) {
+		List<Usuario> usuarios= control.listaNome(nome);
+		lista(usuarios);
+	}
+	
+	private void listaCargo(String cargo) {
+		List<Usuario> usuarios= control.listaCargo(cargo);
+		lista(usuarios);
+	}
+	
+	private void listaPerfil(String perfil) {
+		List<Usuario> usuarios= control.listaPerfil(perfil);
+		lista(usuarios);
+	}
 
-	private void lista() {
-		setAtributos(Usuario.listaOrdenadoPorNome());
+	private void lista(List<Usuario> usuarios) {
+		setAtributos(usuarios);
 		printMark();
 		if (!consultaID.isEmpty()) {
 			if (control.getClass().equals(Usuarios.class)) {
@@ -112,7 +131,35 @@ public class MenuListaUsuario extends View
 
 	public void init() {
 		mostraTitulo();
-		lista();
+		Integer select = -1;
+		select = listaOpcao();
+		boolean sair = false;
+		while (!sair) {
+			switch(select)
+			{
+				case 1:
+					listaNome(recebeCampo("Nome"));
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 2:
+					listaCargo(recebeCampo("Cargo"));
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 3:
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 0:
+					sair = true;
+					break;
+				default:
+					System.out.println("[*Opcao Invalida*]");
+					mostraTitulo();
+					select = listaOpcao();
+			}
+		}
 	}
 
 }

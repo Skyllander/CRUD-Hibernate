@@ -5,18 +5,25 @@ import java.util.Scanner;
 import crud.controller.Usuarios;
 import execoes.ValidationException;
 
-public class MenuCadastraUsuario extends View {
+public class MenuEditaUsuario extends View {
 	
 	private final Usuarios control;
 	
-	MenuCadastraUsuario(Scanner scan, Usuarios control, String titulo) {
+	MenuEditaUsuario(Scanner scan, Usuarios control, String titulo) {
 		super(scan);
 		this.control = control;
+		opcoes.add("Buscar ID");
+		opcoes.add("Buscar Nome");
 		this.titulo = titulo;
 	}
 	
-	private String cadastra() {
+	private <T>void edita(T tag, String entrada) {
+		System.out.println("[*" + control.edita(tag, entrada) + "*]");
+	}
+	
+	private String recebe() {
 		String entrada = new String();
+		
 		String delimiter = " ,";
 		String entPerfil = new String();
 		try {
@@ -35,12 +42,48 @@ public class MenuCadastraUsuario extends View {
 		catch (ValidationException e){
 			return e.getMessage();
 		}
-		return control.cadastra(entrada);
+		return entrada;
 	}
 	
 	public void init() {
 		mostraTitulo();
-		System.out.println("[*"+ cadastra() + "*]");
+		Integer select = -1;
+		select = listaOpcao();
+		boolean sair = false;
+		while (!sair) {
+			switch(select)
+			{
+				case 1:
+					Integer id = -1;
+					String entrada = new String();
+					
+					try {
+						id = Integer.parseInt(recebeCampo("ID").trim());
+					}
+					catch (NumberFormatException e) {
+						System.out.println("[*Formato de ID invalido*]");
+					}
+					
+					entrada = recebe();
+					
+					edita(id, entrada);
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 2:
+					edita(recebeCampo("Nome Atual"), recebe());
+					mostraTitulo();
+					select = listaOpcao();
+					break;
+				case 0:
+					sair = true;
+					break;
+				default:
+					System.out.println("[*Opcao Invalida*]");
+					mostraTitulo();
+					select = listaOpcao();
+			}
+		}
 	}
-	
+
 }

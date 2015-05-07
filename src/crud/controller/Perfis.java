@@ -34,7 +34,12 @@ public class Perfis implements Controller<Perfil> {
 		Perfil perfil = buscaPorNomeOuId(tag);
 		if (perfil == null) return "Nao econtrado";
 		else {
-			perfil.remove();
+			try {
+				perfil.remove();
+			}
+			catch (ValidationException e) {
+				return e.getMessage();
+			}
 			return "Removido com sucesso";
 		}
 	}

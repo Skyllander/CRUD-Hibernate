@@ -7,7 +7,7 @@ import crud.model.Usuario;
 public class MenuUsuario extends View {
 	
 	private final MenuCadastraUsuario cadastro;
-	private final MenuEdita<Usuario> edicao;
+	private final MenuEditaUsuario edicao;
 	private final MenuListaUsuario listagem;
 	private final MenuRemove<Usuario> remocao;
 	private final Usuarios control;
@@ -16,7 +16,7 @@ public class MenuUsuario extends View {
 		super(scan);
 		control = new Usuarios();
 		cadastro = new MenuCadastraUsuario(scan, control, "USUARIO-CADASTRAR");
-		edicao = new MenuEdita<Usuario>(scan, control, "USUARIO-EDITAR");
+		edicao = new MenuEditaUsuario(scan, control, "USUARIO-EDITAR");
 		listagem = new MenuListaUsuario (scan, control, "USUARIO-LISTAR");
 		remocao = new MenuRemove<Usuario>(scan, control, "USUARIO-REMOVER");
 		opcoes.add("Cadastrar");

@@ -37,7 +37,7 @@ public abstract class Validate {
 		Matcher m = p.matcher(numero);
 
 		if (m.matches()) {
-			throw new ValidationException("Nome nao pode conter numeros");
+			throw new ValidationException("Numero nao pode conter letras");
 		}
 	}
 

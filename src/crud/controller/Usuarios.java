@@ -1,6 +1,7 @@
 package crud.controller;
 
 import java.util.List;
+
 import crud.model.Usuario;
 import execoes.ValidationException;
 
@@ -21,7 +22,7 @@ public class Usuarios implements Controller<Usuario> {
 		if (usuario == null) return "Nao econtrado";
 		else {
 			try {
-				usuario.editaNome(nome);
+				usuario.edita(nome);
 			}
 			catch(ValidationException e) {
 				return e.getMessage();
@@ -50,6 +51,18 @@ public class Usuarios implements Controller<Usuario> {
 			return e.getMessage();
 		}
 		return "Inserido com sucesso";
+	}
+	
+	public List<Usuario> listaNome(String arg) {
+		return Usuario.listaNome(arg);
+	}
+	
+	public List<Usuario> listaCargo(String arg) {
+		return Usuario.listaCargo(arg);
+	}
+	
+	public List<Usuario> listaPerfil(String arg) {
+		return Usuario.listaPerfil(arg);
 	}
 	
 	public List<Usuario> listaOrdenadoPorNome() {

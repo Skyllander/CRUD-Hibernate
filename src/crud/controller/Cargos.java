@@ -35,7 +35,12 @@ public class Cargos implements Controller<Cargo> {
 		Cargo cargo = buscaPorNomeOuId(tag);
 		if (cargo == null) return "Nao econtrado";
 		else {
-			cargo.remove();
+			try {
+				cargo.remove();
+			}
+			catch (ValidationException e) {
+				return e.getMessage();
+			}
 			return "Removido com sucesso";
 		}
 	}

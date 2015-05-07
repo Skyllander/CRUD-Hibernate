@@ -1,6 +1,8 @@
 package crud.model;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -10,7 +12,6 @@ import javax.persistence.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 import execoes.ValidationException;
@@ -39,15 +40,12 @@ public class Usuario extends Model{
 	@ManyToOne
 	public Cargo cargo;
 	
-	//TODO Algo estranho na busca de perfis
-	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	public List<Perfil> perfis;
 	
 	@Column(name = "DATA_CADASTRO")
 	public Calendar dataCadastro;
 	
-	@Type(type = "sim_nao")
 	@Column(name = "ACTIVE")
 	public boolean active;
 	
@@ -61,20 +59,27 @@ public class Usuario extends Model{
 		perfis = new ArrayList<Perfil>();
 		active = true;
 	}
-
-	public void cadastra(String dados) {
+	
+	private void define(String dados, boolean edita) {
 		
 		String[] entrada = dados.split(",");
 		Perfil encontrado = null;
 		String nomePerfil = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		for (String s : entrada) {
-			System.out.println(s);
+		if (edita) {
+			detach();
 		}
 		
 		nome = entrada[0].trim();
 		cpf = entrada[1].trim();
+		
 		dataNascimento = Calendar.getInstance();
+		try {
+			dataNascimento.setTime(sdf.parse(entrada[2]));
+		} catch (ParseException e) {
+			throw new ValidationException("Formato de data invalido");
+		}
 		
 		try {
 			sexo = Sexo.valueOf(entrada[3].trim());
@@ -97,20 +102,45 @@ public class Usuario extends Model{
 			}
 		}
 		
-		dataCadastro = Calendar.getInstance();
+		if (!edita) dataCadastro = Calendar.getInstance();
+	}
+
+	public void cadastra(String dados) {
+		
+		define(dados, false);
 		
 		validar();
 		dao.adiciona(this);
+		
+		this.cargo.usuarios.add(this);
+		for (Perfil perf : this.perfis) {
+			perf.usuarios.add(this);
+		}
+		dao.commit();
+	}
+	
+	private void detach() {
+		
+		for (Perfil perf : this.perfis) {
+			perf.usuarios.remove(this);
+		}
+		this.perfis.clear();
+		
+		this.cargo.usuarios.remove(this);
+		
 	}
 
 	public void remove() {
+		detach();
 		this.active = false;
-		//dao.remove(this);
+		dao.commit();
 	}
 
-	public <T>void editaNome(String nome) {
+	public <T>void edita(String entrada) {
 		dao.detach(this);
-		this.nome = nome;
+		
+		define(entrada, true);
+		
 		validar();
 		dao.merge(this);
 		dao.commit();
@@ -118,6 +148,18 @@ public class Usuario extends Model{
 
 	public static List<Usuario> listaOrdenadoPorNome() {
 		return dao.listaOrdenadoPorNome();
+	}
+	
+	public static List<Usuario> listaNome(String arg) {
+		return dao.listaNome(arg);
+	}
+	
+	public static List<Usuario> listaCargo(String arg) {
+		return dao.listaCargo(arg);
+	}
+	
+	public static List<Usuario> listaPerfil(String arg) {
+		return dao.listaPerfil(arg);
 	}
 
 	public static Usuario buscaPorNome(String nome) {
@@ -127,6 +169,8 @@ public class Usuario extends Model{
 	public static Usuario buscaPorId(Integer id) {
 		return dao.buscaPorId(id);
 	}
+	
+
 
 	private void validar() {
 		Validate.checkNome(this.nome);
@@ -158,7 +202,7 @@ public class Usuario extends Model{
 		Set<ConstraintViolation<Usuario>> validate = Validate.hibernateCheck(this);
 		for (ConstraintViolation<Usuario> constraintViolation : validate) {
 			System.out.println(constraintViolation.getMessage());
-			throw new ValidationException("Campo obrigatorio (*) foi deixado em branco");
+			throw new ValidationException("Campo obrigatorio (*) deixado em branco");
 		}
 	}
 	

@@ -1,9 +1,11 @@
 package crud.model;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.ConstraintViolation;
+
 import execoes.ValidationException;
 
 @Entity
@@ -15,13 +17,18 @@ public class Cargo extends Model{
 
 	@Transient
 	private static final CargoDAO dao = new CargoDAO();
+	
+	@OneToMany(mappedBy="cargo")
+	List<Usuario> usuarios;
 
 	public Cargo() {
-
+		this.nome = "NaoDefinido";
+		usuarios = new ArrayList<Usuario>();
 	}
 
 	public Cargo (String nome) {
 		this.nome = nome;
+		usuarios = new ArrayList<Usuario>();
 	}
 
 	public void cadastra() {
@@ -30,7 +37,14 @@ public class Cargo extends Model{
 	}
 
 	public void remove() {
-		dao.remove(this);
+		boolean free = true;
+		if (!usuarios.isEmpty()) {
+			for (Usuario user : usuarios) {
+				if (user.active) free = false;
+			}
+		}
+		if (free) dao.remove(this);
+		else throw new ValidationException("Cargo se encontra vinculado a Usuario");
 	}
 
 	public <T>void editaNome(String nome) {

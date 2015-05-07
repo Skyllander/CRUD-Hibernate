@@ -1,9 +1,12 @@
 package crud.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.ConstraintViolation;
+
 import execoes.ValidationException;
 
 @Entity
@@ -15,13 +18,18 @@ public class Perfil extends Model{
 
 	@Transient
 	private static final PerfilDAO dao = new PerfilDAO();
+	
+	@ManyToMany(mappedBy="perfis")
+	List<Usuario> usuarios;
 
 	public Perfil() {
-
+		this.nome = "NaoDefinido";
+		usuarios = new ArrayList<Usuario>();
 	}
 
 	public Perfil (String nome) {
 		this.nome = nome;
+		usuarios = new ArrayList<Usuario>();
 	}
 
 	public void cadastra() {
@@ -30,7 +38,14 @@ public class Perfil extends Model{
 	}
 
 	public void remove() {
-		dao.remove(this);
+		boolean free = true;
+		if (!usuarios.isEmpty()) {
+			for (Usuario user : usuarios) {
+				if (user.active) free = false;
+			}
+		}
+		if (free) dao.remove(this);
+		else throw new ValidationException("Perfil se encontra vinculado a Usuario");
 	}
 
 	public <T>void editaNome(String nome) {
