@@ -73,7 +73,7 @@ public class MenuListaUsuario extends View
 		consultaCargo.clear();
 		consultaPerfil.clear();
 	}
-	
+
 	private void listaFiltro(String nome, String cargo, String perfil) {
 		List<Usuario> usuarios = control.listaFiltro(nome, cargo, perfil);
 		lista(usuarios);
@@ -82,31 +82,32 @@ public class MenuListaUsuario extends View
 	private void lista(List<Usuario> usuarios) {
 		setAtributos(usuarios);
 		printMark();
+		int pag = 1;
 		if (!consultaID.isEmpty()) {
-			if (control.getClass().equals(Usuarios.class)) {
-				for(int i = 0; i < consultaID.size(); ++i) {
-					SimpleDateFormat style = new SimpleDateFormat("dd/MM/yyyy");
-					System.out.println("ID: " + consultaID.get(i));
-					System.out.println("Nome: " + consultaN.get(i));
-					System.out.println("CPF: " + consultaCPF.get(i));
-					System.out.println("Sexo: " + consultaSexo.get(i));
-					System.out.println("Cargo: " + consultaCargo.get(i).nome);
-					System.out.println("Nascimento: " + style.format(consultaNascimento.get(i).getTime()));
-					System.out.println("Cadastro: " + style.format(consultaDataCadastro.get(i).getTime()));
-					System.out.print("Perfis: ");
-					if (!consultaPerfil.get(i).isEmpty())
-						for (Perfil p : consultaPerfil.get(i)) {
-							System.out.print(p.nome + "|");
-						}
-					else System.out.print("|");
-					System.out.println();
-					printMark();
+			System.out.println("Pag. " + pag);
+			printMark();
+			++pag;
+			for(int i = 0; i < consultaID.size(); ++i) {
+				SimpleDateFormat style = new SimpleDateFormat("dd/MM/yyyy");
+				System.out.println("ID: " + consultaID.get(i));
+				System.out.println("Nome: " + consultaN.get(i));
+				System.out.println("CPF: " + consultaCPF.get(i));
+				System.out.println("Sexo: " + consultaSexo.get(i));
+				System.out.println("Cargo: " + consultaCargo.get(i).nome);
+				System.out.println("Nascimento: " + style.format(consultaNascimento.get(i).getTime()));
+				System.out.println("Cadastro: " + style.format(consultaDataCadastro.get(i).getTime()));
+				System.out.print("Perfis: ");
+				if (!consultaPerfil.get(i).isEmpty()) {
+					for (Perfil p : consultaPerfil.get(i))
+						System.out.print(p.nome + "|");
 				}
-			}
-			else {
-				for(int i = 0; i < consultaID.size(); ++i) {
-					System.out.println("ID: " + consultaID.get(i) + " | Nome: " + consultaN.get(i));
+				else System.out.print("|");
+				System.out.println();
+				printMark();
+				if ((i + 1) % 5 == 0 && consultaID.size() > i + 1) {
+					System.out.println("Pag. " + pag);
 					printMark();
+					++pag;
 				}
 			}
 		}
@@ -119,39 +120,8 @@ public class MenuListaUsuario extends View
 
 	public void init() {
 		mostraTitulo();
-		System.out.println("-> Filtros:");
+		System.out.println("-> Filtros:\n");
 		listaFiltro(recebeCampo("Nome"),recebeCampo("Cargo"),recebeCampo("Perfil"));
-		/*
-		Integer select = -1;
-		select = listaOpcao();
-		boolean sair = false;
-		while (!sair) {
-			switch(select)
-			{
-				case 1:
-					listaFiltro(recebeCampo("Nome"),recebeCampo("Cargo"),recebeCampo("Perfil"));
-					//listaNome(recebeCampo("Nome"));
-					mostraTitulo();
-					select = listaOpcao();
-					break;
-				case 2:
-					listaCargo(recebeCampo("Cargo"));
-					mostraTitulo();
-					select = listaOpcao();
-					break;
-				case 3:
-					mostraTitulo();
-					select = listaOpcao();
-					break;
-				case 0:
-					sair = true;
-					break;
-				default:
-					System.out.println("[*Opcao Invalida*]");
-					mostraTitulo();
-					select = listaOpcao();
-			}
-		}*/
 	}
 
 }

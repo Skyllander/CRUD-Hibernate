@@ -21,9 +21,6 @@ public class UsuarioDAO extends DAO<Usuario>{
 			return null;
 		}
 	}
-	
-	
-	//TODO checar active na busca / mudar parametro
 	public Usuario buscaPorCPF(String cpf) {
 		try {
 			Query query = em.createQuery("from Usuario WHERE active = true AND cpf = :cpf");
@@ -46,8 +43,9 @@ public class UsuarioDAO extends DAO<Usuario>{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Usuario> listaFiltro(String nome, String cargo, String perfil) {
-		Query query = em.createQuery("SELECT u FROM Usuario u JOIN u.perfis p WHERE"
+		Query query = em.createQuery("SELECT DISTINCT u FROM Usuario u LEFT JOIN u.perfis p WHERE"
 				+ " u.active = true AND (u.nome like :nome OR :nome IS NULL)"
 				+ " AND (u.cargo.nome = :cargo OR :cargo IS NULL)"
 				+ " AND (p.nome = :perfil OR :perfil IS NULL)");
@@ -65,7 +63,7 @@ public class UsuarioDAO extends DAO<Usuario>{
 		if (perfil.isEmpty()) 
 			query.setParameter("perfil", null);
 		else 
-			query.setParameter("perfil", perfil);
+			query.setParameter("perfil", perfil.trim());
 		
 		try {
 			return query.getResultList();
@@ -78,27 +76,6 @@ public class UsuarioDAO extends DAO<Usuario>{
 	@SuppressWarnings("unchecked")
 	public List<Usuario> listaOrdenadoPorNome() {
 		Query query = em.createQuery("from Usuario where active = true order by nome");
-		return query.getResultList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Usuario> listaNome(String arg) {
-		Query query = em.createQuery("from Usuario where nome like :arg");
-		query.setParameter("arg", "%" + arg.trim() + "%");
-		return query.getResultList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Usuario> listaCargo(String arg) {
-		Query query = em.createQuery("from Usuario where cargo.nome = :arg");
-		query.setParameter("arg", arg.trim());
-		return query.getResultList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Usuario> listaPerfil(String arg) {
-		Query query = em.createQuery("from Usuario u JOIN cargo c where c.nome = :arg");
-		query.setParameter("arg", arg.trim());
 		return query.getResultList();
 	}
 

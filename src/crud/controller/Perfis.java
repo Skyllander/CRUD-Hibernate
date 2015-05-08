@@ -8,7 +8,7 @@ public class Perfis implements Controller<Perfil> {
 
 	public Perfis() {
 	}
-	
+
 	private <T>Perfil buscaPorNomeOuId(T tag) {
 		if (tag.getClass().equals(String.class)) {
 			return Perfil.buscaPorNome((String)tag);
@@ -56,7 +56,7 @@ public class Perfis implements Controller<Perfil> {
 		}
 		return "Inserido com sucesso";
 	}
-	
+
 	public List<Perfil> listaOrdenadoPorNome() {
 		return Perfil.listaOrdenadoPorNome();
 	}

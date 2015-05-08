@@ -1,11 +1,7 @@
 package crud.model;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.ConstraintViolation;
 
 import execoes.ValidationException;
 
@@ -18,18 +14,13 @@ public class Perfil extends Model{
 
 	@Transient
 	private static final PerfilDAO dao = new PerfilDAO();
-	
-	@ManyToMany(mappedBy="perfis")
-	List<Usuario> usuarios;
 
 	public Perfil() {
 		this.nome = "NaoDefinido";
-		usuarios = new ArrayList<Usuario>();
 	}
 
 	public Perfil (String nome) {
 		this.nome = nome;
-		usuarios = new ArrayList<Usuario>();
 	}
 
 	public void cadastra() {
@@ -38,13 +29,8 @@ public class Perfil extends Model{
 	}
 
 	public void remove() {
-		boolean free = true;
-		if (!usuarios.isEmpty()) {
-			for (Usuario user : usuarios) {
-				if (user.active) free = false;
-			}
-		}
-		if (free) dao.remove(this);
+		if (!isVinculado())
+			dao.remove(this);
 		else throw new ValidationException("Perfil se encontra vinculado a Usuario");
 	}
 
@@ -68,8 +54,12 @@ public class Perfil extends Model{
 		return dao.buscaPorId(id);
 	}
 
+	public boolean isVinculado() {
+		return dao.isVinculado(this.id);
+	}
+
 	private void validar() {
-		validarHibernateValidator();
+		Validate.checkHibernate(this);
 		Validate.checkNome(this.nome);
 		validarMesmoNome();
 	}
@@ -82,14 +72,6 @@ public class Perfil extends Model{
 			throw new ValidationException("Nome de usuario ja existente");
 		}
 
-	}
-
-	private void validarHibernateValidator () {
-		Set<ConstraintViolation<Perfil>> validate = Validate.hibernateCheck(this);
-		for (ConstraintViolation<Perfil> constraintViolation : validate) {
-			System.out.println(constraintViolation.getMessage());
-			throw new ValidationException("Campo Nome obrigatorio");
-		}
 	}
 
 }

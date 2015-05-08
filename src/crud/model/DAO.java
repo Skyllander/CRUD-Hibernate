@@ -31,6 +31,7 @@ public abstract class DAO<T> {
 		return (T)query.getSingleResult();
 	}
 
+
 	public void adiciona(T obj) {
 		em.persist(obj);
 		commit();

@@ -59,18 +59,6 @@ public class Usuarios implements Controller<Usuario> {
 		return Usuario.listaFiltro(nome, cargo, perfil);
 	}
 	
-	public List<Usuario> listaNome(String arg) {
-		return Usuario.listaNome(arg);
-	}
-	
-	public List<Usuario> listaCargo(String arg) {
-		return Usuario.listaCargo(arg);
-	}
-	
-	public List<Usuario> listaPerfil(String arg) {
-		return Usuario.listaPerfil(arg);
-	}
-	
 	public List<Usuario> listaOrdenadoPorNome() {
 		return Usuario.listaOrdenadoPorNome();
 	}

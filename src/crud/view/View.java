@@ -7,7 +7,7 @@ import execoes.ValidationException;
 
 public abstract class View {
 	
-	Scanner user_scan;
+	protected Scanner user_scan;
 	String titulo;
 	ArrayList<String> opcoes;
 	ArrayList<String> campos;
