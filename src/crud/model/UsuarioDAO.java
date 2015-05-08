@@ -13,51 +13,71 @@ public class UsuarioDAO extends DAO<Usuario>{
 
 	public Usuario buscaPorNome(String nome) {
 		try {
-			Usuario encontrado = (Usuario)em.createQuery("from Usuario where nome = '" + nome + "'").getSingleResult();
-			if (!encontrado.active) throw new NoResultException();
-			return encontrado;
+			Query query = em.createQuery("from Usuario WHERE active = true AND nome = :nome");
+			query.setParameter("nome", nome);
+			return (Usuario)query.getSingleResult();
 		}
 		catch (NoResultException e) {
-			return null;
-		}
-		catch (NullPointerException e) {
 			return null;
 		}
 	}
 	
+	
+	//TODO checar active na busca / mudar parametro
 	public Usuario buscaPorCPF(String cpf) {
 		try {
-			Usuario encontrado = (Usuario)em.createQuery("from Usuario where cpf= '" + cpf + "'").getSingleResult();
-			if (!encontrado.active) throw new NoResultException();
-			return encontrado;
+			Query query = em.createQuery("from Usuario WHERE active = true AND cpf = :cpf");
+			query.setParameter("cpf", cpf);
+			return (Usuario)query.getSingleResult();
 		}
 		catch (NoResultException e) {
-			return null;
-		}
-		catch (NullPointerException e) {
 			return null;
 		}
 	}
 	
 	public Usuario buscaPorId(Integer id) {
-		Query query = em.createQuery("from Usuario where id = :nID ");
+		Query query = em.createQuery("FROM Usuario WHERE active = true AND id = :nID");
 		query.setParameter("nID", id);
 		try {
-			Usuario encontrado = (Usuario)query.getSingleResult();
-			if (!encontrado.active) throw new NoResultException();
-			return encontrado;
+			return (Usuario)query.getSingleResult();
 		}
 		catch (NoResultException e) {
 			return null;
 		}
-		catch (NullPointerException e) {
+	}
+	
+	public List<Usuario> listaFiltro(String nome, String cargo, String perfil) {
+		Query query = em.createQuery("SELECT u FROM Usuario u JOIN u.perfis p WHERE"
+				+ " u.active = true AND (u.nome like :nome OR :nome IS NULL)"
+				+ " AND (u.cargo.nome = :cargo OR :cargo IS NULL)"
+				+ " AND (p.nome = :perfil OR :perfil IS NULL)");
+		
+		if (nome.isEmpty()) 
+			query.setParameter("nome", null);
+		else 
+			query.setParameter("nome", "%" + nome.trim() + "%");
+		
+		if (cargo.isEmpty()) 
+			query.setParameter("cargo", null);
+		else 
+			query.setParameter("cargo", cargo);
+		
+		if (perfil.isEmpty()) 
+			query.setParameter("perfil", null);
+		else 
+			query.setParameter("perfil", perfil);
+		
+		try {
+			return query.getResultList();
+		}
+		catch (NoResultException e) {
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Usuario> listaOrdenadoPorNome() {
-		Query query = em.createQuery("from Usuario order by nome");
+		Query query = em.createQuery("from Usuario where active = true order by nome");
 		return query.getResultList();
 	}
 	

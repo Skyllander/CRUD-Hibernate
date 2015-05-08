@@ -36,6 +36,8 @@ public class Cargo extends Model{
 		dao.adiciona(this);
 	}
 
+	
+	//TODO passar para metodo(validar se existe usuario) e fazer select direto
 	public void remove() {
 		boolean free = true;
 		if (!usuarios.isEmpty()) {
@@ -83,6 +85,7 @@ public class Cargo extends Model{
 
 	}
 
+	//TODO passar para o validate
 	private void validarHibernateValidator () {
 		Set<ConstraintViolation<Cargo>> validate = Validate.hibernateCheck(this);
 		for (ConstraintViolation<Cargo> constraintViolation : validate) {

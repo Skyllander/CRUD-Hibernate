@@ -51,13 +51,11 @@ public class Usuario extends Model{
 	
 	public Usuario() {
 		perfis = new ArrayList<Perfil>();
-		active = true;
 	}
 
 	public Usuario (String nome) {
 		this.nome = nome;
 		perfis = new ArrayList<Perfil>();
-		active = true;
 	}
 	
 	private void define(String dados, boolean edita) {
@@ -108,10 +106,11 @@ public class Usuario extends Model{
 	public void cadastra(String dados) {
 		
 		define(dados, false);
-		
+		active = true;
 		validar();
 		dao.adiciona(this);
 		
+		//TODO nao precisa
 		this.cargo.usuarios.add(this);
 		for (Perfil perf : this.perfis) {
 			perf.usuarios.add(this);
@@ -148,6 +147,12 @@ public class Usuario extends Model{
 
 	public static List<Usuario> listaOrdenadoPorNome() {
 		return dao.listaOrdenadoPorNome();
+	}
+	
+	//TODO filtrar como um todo
+	
+	public static List<Usuario> listaFiltro(String nome, String cargo, String perfil) {
+		return dao.listaFiltro(nome, cargo, perfil);
 	}
 	
 	public static List<Usuario> listaNome(String arg) {

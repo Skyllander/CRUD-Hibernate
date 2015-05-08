@@ -18,17 +18,19 @@ public class Usuarios implements Controller<Usuario> {
 	}
 
 	public <T>String edita(T tag, String nome) {
+		
 		Usuario usuario = buscaPorNomeOuId(tag);
-		if (usuario == null) return "Nao econtrado";
-		else {
-			try {
-				usuario.edita(nome);
-			}
-			catch(ValidationException e) {
-				return e.getMessage();
-			}
-			return "Editado com Sucesso";
+		if (usuario == null) 
+			return "Nao econtrado";
+		
+		try {
+			usuario.edita(nome);
 		}
+		catch(ValidationException e) {
+			return e.getMessage();
+		}
+		return "Editado com Sucesso";
+		
 	}
 
 	public <T>String remove(T tag) {
@@ -51,6 +53,10 @@ public class Usuarios implements Controller<Usuario> {
 			return e.getMessage();
 		}
 		return "Inserido com sucesso";
+	}
+	
+	public List<Usuario> listaFiltro(String nome, String cargo, String perfil) {
+		return Usuario.listaFiltro(nome, cargo, perfil);
 	}
 	
 	public List<Usuario> listaNome(String arg) {

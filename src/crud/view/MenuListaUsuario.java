@@ -45,20 +45,18 @@ public class MenuListaUsuario extends View
 		if (!usuarios.isEmpty()) {
 			int last;
 			for (Usuario usuario : usuarios) {
-				if (usuario.active) {
-					consultaID.add(usuario.id);
-					consultaN.add(usuario.nome);
-					consultaCPF.add(usuario.cpf);
-					consultaNascimento.add(usuario.dataNascimento);
-					consultaDataCadastro.add(usuario.dataCadastro);
-					consultaSexo.add(usuario.sexo);
-					consultaCargo.add(usuario.cargo);
-					consultaPerfil.add(new ArrayList<Perfil>());
-					last = consultaPerfil.size() - 1;
-					if (!usuario.perfis.isEmpty()) {
-						for(Perfil p : usuario.perfis) {
-							consultaPerfil.get(last).add(p);
-						}
+				consultaID.add(usuario.id);
+				consultaN.add(usuario.nome);
+				consultaCPF.add(usuario.cpf);
+				consultaNascimento.add(usuario.dataNascimento);
+				consultaDataCadastro.add(usuario.dataCadastro);
+				consultaSexo.add(usuario.sexo);
+				consultaCargo.add(usuario.cargo);
+				consultaPerfil.add(new ArrayList<Perfil>());
+				last = consultaPerfil.size() - 1;
+				if (!usuario.perfis.isEmpty()) {
+					for(Perfil p : usuario.perfis) {
+						consultaPerfil.get(last).add(p);
 					}
 				}
 			}
@@ -76,18 +74,8 @@ public class MenuListaUsuario extends View
 		consultaPerfil.clear();
 	}
 	
-	private void listaNome(String nome) {
-		List<Usuario> usuarios= control.listaNome(nome);
-		lista(usuarios);
-	}
-	
-	private void listaCargo(String cargo) {
-		List<Usuario> usuarios= control.listaCargo(cargo);
-		lista(usuarios);
-	}
-	
-	private void listaPerfil(String perfil) {
-		List<Usuario> usuarios= control.listaPerfil(perfil);
+	private void listaFiltro(String nome, String cargo, String perfil) {
+		List<Usuario> usuarios = control.listaFiltro(nome, cargo, perfil);
 		lista(usuarios);
 	}
 
@@ -131,6 +119,9 @@ public class MenuListaUsuario extends View
 
 	public void init() {
 		mostraTitulo();
+		System.out.println("-> Filtros:");
+		listaFiltro(recebeCampo("Nome"),recebeCampo("Cargo"),recebeCampo("Perfil"));
+		/*
 		Integer select = -1;
 		select = listaOpcao();
 		boolean sair = false;
@@ -138,7 +129,8 @@ public class MenuListaUsuario extends View
 			switch(select)
 			{
 				case 1:
-					listaNome(recebeCampo("Nome"));
+					listaFiltro(recebeCampo("Nome"),recebeCampo("Cargo"),recebeCampo("Perfil"));
+					//listaNome(recebeCampo("Nome"));
 					mostraTitulo();
 					select = listaOpcao();
 					break;
@@ -159,7 +151,7 @@ public class MenuListaUsuario extends View
 					mostraTitulo();
 					select = listaOpcao();
 			}
-		}
+		}*/
 	}
 
 }
