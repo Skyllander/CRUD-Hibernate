@@ -56,38 +56,38 @@ public class Usuario extends Model {
 		active = false;
 	}
 	
-	private void define(String dados, boolean edita) {
+	private void define(List<String> dados, boolean edita) {
 		
-		String[] entrada = dados.split(",");
 		Perfil encontrado = null;
 		String nomePerfil = "";
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		nome = entrada[0].trim();
-		cpf = entrada[1].trim();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		nome = dados.get(0);
+		cpf = dados.get(1);
 		
 		dataNascimento = Calendar.getInstance();
 		
 		try {
-			dataNascimento.setTime(sdf.parse(entrada[2]));
-		} catch (ParseException e) {
+			dataNascimento.setTime(sdf.parse(dados.get(2)));
+		}
+		catch (ParseException e) {
 			throw new ValidationException("Formato de data invalido");
 		}
 		
 		try {
-			sexo = Sexo.valueOf(entrada[3].trim());
+			sexo = Sexo.valueOf(dados.get(3));
 		}
 		catch (IllegalArgumentException e) {
 			throw new ValidationException("Sexo invalido");
 		}
 		
-		cargo = Cargo.buscaPorNome(entrada[4].trim());
-	
-		for(int i = 5; i < entrada.length; ++i) {
-			nomePerfil = entrada[i].trim();
-			if (!nomePerfil.isEmpty()) {
+		cargo = Cargo.buscaPorNome(dados.get(4));
+		
+		for(int i = 5; i < dados.size(); ++i) {
+			nomePerfil = dados.get(i);
+			if(!nomePerfil.isEmpty()) {
 				encontrado = Perfil.buscaPorNome(nomePerfil);
-				if (encontrado != null) perfis.add(encontrado);
+				if(encontrado != null) perfis.add(encontrado);
 				else {
 					throw new ValidationException("Perfil '" + nomePerfil + "' nao existe");
 				}
@@ -96,9 +96,10 @@ public class Usuario extends Model {
 		}
 		
 		if (!edita) dataCadastro = Calendar.getInstance();
+		
 	}
 
-	public void cadastra(String dados) {
+	public void cadastra(List<String> dados) {
 		
 		define(dados, false);
 		active = true;
@@ -112,10 +113,10 @@ public class Usuario extends Model {
 		dao.commit();
 	}
 
-	public <T>void edita(String entrada) {
+	public <T>void edita(List<String> dados) {
 		dao.detach(this);
 		
-		define(entrada, true);
+		define(dados, true);
 		
 		validar();
 		dao.merge(this);

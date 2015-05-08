@@ -1,13 +1,13 @@
 package crud.view;
 
 import java.util.Scanner;
-import crud.controller.Controller;
+import crud.controller.Usuarios;
 
-public class MenuRemove<E> extends View {
+public class MenuRemoveUsuario extends View {
 
-	private final Controller<E> control;
+	private final Usuarios control;
 
-	MenuRemove(Scanner scan, Controller<E> control, String titulo) {
+	MenuRemoveUsuario(Scanner scan, Usuarios control, String titulo) {
 		super(scan);
 		this.control = control;
 		opcoes.add("Buscar ID");

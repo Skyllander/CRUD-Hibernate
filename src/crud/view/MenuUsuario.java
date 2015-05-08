@@ -2,14 +2,13 @@ package crud.view;
 
 import java.util.Scanner;
 import crud.controller.Usuarios;
-import crud.model.Usuario;
 
 public class MenuUsuario extends View {
 	
 	private final MenuCadastraUsuario cadastro;
 	private final MenuEditaUsuario edicao;
 	private final MenuListaUsuario listagem;
-	private final MenuRemove<Usuario> remocao;
+	private final MenuRemoveUsuario remocao;
 	private final Usuarios control;
 	
 	MenuUsuario(Scanner scan) {
@@ -18,7 +17,7 @@ public class MenuUsuario extends View {
 		cadastro = new MenuCadastraUsuario(scan, control, "USUARIO-CADASTRAR");
 		edicao = new MenuEditaUsuario(scan, control, "USUARIO-EDITAR");
 		listagem = new MenuListaUsuario (scan, control, "USUARIO-LISTAR");
-		remocao = new MenuRemove<Usuario>(scan, control, "USUARIO-REMOVER");
+		remocao = new MenuRemoveUsuario(scan, control, "USUARIO-REMOVER");
 		opcoes.add("Cadastrar");
 		opcoes.add("Listar");
 		opcoes.add("Editar");

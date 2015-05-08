@@ -1,9 +1,10 @@
 package crud.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import crud.controller.Usuarios;
-import execoes.ValidationException;
 
 public class MenuEditaUsuario extends View {
 	
@@ -17,31 +18,33 @@ public class MenuEditaUsuario extends View {
 		this.titulo = titulo;
 	}
 	
-	private <T>void edita(T tag, String entrada) {
+	private <T>void edita(T tag, List<String> entrada) {
 		System.out.println("[*" + control.edita(tag, entrada) + "*]");
 	}
 	
-	private String recebe() {
-		String entrada = new String();
+	private List<String> recebe() {
+		List<String> entrada = new ArrayList<String>();
 		
-		String delimiter = " ,";
-		String entPerfil = new String();
-		try {
-			entrada = entrada.concat(recebeCampoDeUsuario("Nome*").trim() + delimiter);
-			entrada = entrada.concat(recebeCampoDeUsuario("CPF*").trim() + delimiter);
-			System.out.println("-> Formato: Dia/Mes/Ano");
-			entrada = entrada.concat(recebeCampoDeUsuario("Data de Nascimento").trim() + delimiter);
-			entrada = entrada.concat(recebeCampoDeUsuario("Sexo").trim() + delimiter);
-			entrada = entrada.concat(recebeCampoDeUsuario("Cargo*").trim() + delimiter);
-			System.out.println("-> Deixe em branco para finalizar o cadastro");
-			while (!entPerfil.equals(delimiter)) {
-				entPerfil = recebeCampoDeUsuario("Perfil").trim() + delimiter;
-				entrada = entrada.concat(entPerfil);
+		entrada.add(recebeCampoDeUsuario("Nome*").trim());
+		entrada.add(recebeCampoDeUsuario("CPF*").trim());
+		System.out.println("-> Formato: Dia/Mes/Ano");
+		entrada.add(recebeCampoDeUsuario("Data de Nascimento*").trim());
+		entrada.add(recebeCampoDeUsuario("Sexo").trim());
+		entrada.add(recebeCampoDeUsuario("Cargo*").trim());
+		System.out.println("-> Deixe em branco para finalizar o cadastro");
+		
+		boolean sair = false;
+		String novoPerfil = "";
+		while(!sair) {
+			novoPerfil = recebeCampoDeUsuario("Perfil").trim();
+			if (!novoPerfil.isEmpty()) {
+				entrada.add(novoPerfil);
+			}
+			else {
+				sair = true;
 			}
 		}
-		catch (ValidationException e){
-			return e.getMessage();
-		}
+		
 		return entrada;
 	}
 	
@@ -55,7 +58,7 @@ public class MenuEditaUsuario extends View {
 			{
 				case 1:
 					Integer id = -1;
-					String entrada = new String();
+					List<String> entrada = new ArrayList<String>();
 					
 					try {
 						id = Integer.parseInt(recebeCampo("ID").trim());
